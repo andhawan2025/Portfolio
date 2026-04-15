@@ -130,55 +130,41 @@ PROJECTS = [
         "artifact": "Research Paper & Methodology",
     },
     {
-        "id": "ai-chess",
-        "title": "Chess AI Companion",
+        "id": "tmys",
+        "title": "Tell Me Your Story (TMYS)",
         "category": "Fun Ventures",
-        "goal": "Build a personal project: an AI chess coach that analyzes games, identifies weaknesses, and provides personalized training recommendations.",
-        "impact": "10K+ downloads on the app store. Featured in Chess.com newsletter. Improved my own rating by 200 points!",
-        "role": "Solo Creator",
-        "toolkit": [
-            "Stockfish Integration",
-            "Position Evaluation",
-            "Move Tree Analysis",
-            "Pattern Recognition",
-            "Spaced Repetition",
-            "Mobile ML",
+        "role": "Experimenter / AI Product Builder",
+        "goal": (
+            "Build an AI-native content platform that transforms user prompts into fully "
+            "generated video stories with character consistency — automating the end-to-end pipeline from screenplay "
+            "creation to final video production and distribution."
+        ),
+        "impact_bullets": [
+            "Designed and prototyped a multi-agent AI pipeline for automated storytelling",
+            "Validated feasibility of generating consistent characters, scenes, and narrative "
+            "flow using GenAI",
+            "Reduced manual video production effort by ~80 –90%",
+            "Established foundation for a scalable AI content platform "
+            "(YouTube-first distribution, SaaS potential)",
         ],
-        "artifact": "App Screenshots & Architecture",
-    },
-    {
-        "id": "music-generator",
-        "title": "AI Music Jam Session",
-        "category": "Fun Ventures",
-        "goal": "Hackathon project: create an AI that generates accompanying music in real-time based on a musician's live performance.",
-        "impact": "Won 1st place at AI Hackathon SF. Collaborated with local jazz musicians for demo performance.",
-        "role": "Hackathon Lead",
         "toolkit": [
-            "Audio Feature Extraction",
-            "MIDI Generation",
-            "Real-time Inference",
-            "Music Transformers",
-            "Latency Optimization",
-            "WebAudio API",
+            "Text-To-Image",
+            "Image-To-Video",
+            "Agentic Architecture",
+            "GPT-4o",
+            "Google Veo-3",
+            "Nano Banana",
+            "Agentic Evaluation",
+            "YouTube Publishing",
         ],
-        "artifact": "Demo Video & System Design",
-    },
-    {
-        "id": "pet-tracker",
-        "title": "AI Pet Behavior Tracker",
-        "category": "Fun Ventures",
-        "goal": "Weekend project to build a computer vision system that tracks my cat's daily activities and generates amusing daily reports.",
-        "impact": "Went viral on Twitter with 50K+ likes. Open-sourced with 2K GitHub stars. My cat is now internet famous.",
-        "role": "Weekend Hacker",
-        "toolkit": [
-            "Object Detection",
-            "Pose Estimation",
-            "Activity Classification",
-            "Raspberry Pi",
-            "TensorFlow Lite",
-            "Real-time Video Processing",
+        "artifact_links": [
+            {
+                "label": "Demo Video",
+                "url": "https://www.youtube.com/watch?v=YveTm6DmPWM",
+                "external": True,
+            },
+            {"label": "TMYS Agentic Map", "modal": True},
         ],
-        "artifact": "Cat Analytics Dashboard",
     },
 ]
 
@@ -208,6 +194,12 @@ def home():
 @app.route("/profile-photo")
 def profile_photo():
     return send_file(PROFILE_IMAGE_PATH, mimetype="image/png")
+
+
+@app.route("/tmys-architecture")
+def tmys_architecture():
+    """Agent map shown in portfolio modal; keep in sync with templates/TMYSAgentMap.html."""
+    return render_template("TMYSArchitecture.html")
 
 
 if __name__ == "__main__":

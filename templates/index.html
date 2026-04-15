@@ -18,7 +18,7 @@
             />
             <h1>Anubhav Dhawan</h1>
           </div>
-          <p class="eyebrow">AI/ML Product Manager</p>
+          <p class="eyebrow">AI/ML Product Manager & Consultant</p>
           <p class="lead">
             I turn AI/ML capabilities into real-world products that drive measurable business outcomes.
           </p>
@@ -87,19 +87,62 @@
                 </div>
                 <div>
                   <p class="label">Impact</p>
+                  {% if project.impact_bullets %}
+                  <ul class="impact-list">
+                    {% for item in project.impact_bullets %}
+                    <li class="impact">{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% else %}
                   <p class="impact">{{ project.impact }}</p>
+                  {% endif %}
                 </div>
                 <div>
                   <p class="label">Toolkit</p>
+                  {% if project.toolkit_rich %}
+                  <ul class="toolkit-list">
+                    {% for entry in project.toolkit_rich %}
+                    {% if entry.section is defined and entry.section %}
+                    <li>
+                      <strong>{{ entry.section }}</strong>
+                      <ul class="toolkit-sublist">
+                        {% for sub in entry.bullets %}
+                        <li>{{ sub }}</li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                    {% elif entry.line is defined %}
+                    <li>{{ entry.line }}</li>
+                    {% endif %}
+                    {% endfor %}
+                  </ul>
+                  {% else %}
                   <div class="toolkit">
                     {% for tool in project.toolkit %}
                     <span>{{ tool }}</span>
                     {% endfor %}
                   </div>
+                  {% endif %}
                 </div>
               </div>
 
-              <p class="artifact"><strong>Artifact:</strong> {{ project.artifact }}</p>
+              <p class="artifact">
+                <strong>Artifacts:</strong>
+                {% if project.artifact_links is defined and project.artifact_links %}
+                {% for link in project.artifact_links %}
+                {% if link.modal %}
+                <button type="button" class="artifact-popup-trigger" data-artifact-src="{{ url_for('tmys_architecture') }}">{{ link.label }}</button>
+                {% else %}
+                <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>
+                {% endif %}
+                {% if not loop.last %}<span class="artifact-sep"> · </span>{% endif %}
+                {% endfor %}
+                {% elif project.artifact_url is defined and project.artifact_url %}
+                <a href="{{ project.artifact_url }}" target="_blank" rel="noopener noreferrer">{{ project.artifact_label or "Demo Video" }}</a>
+                {% else %}
+                {{ project.artifact }}
+                {% endif %}
+              </p>
             </article>
             {% endfor %}
           </div>
@@ -133,6 +176,51 @@
           });
         </script>
       </section>
+
+      <div id="artifact-modal" class="artifact-modal" hidden>
+        <div class="artifact-modal-backdrop" data-artifact-close></div>
+        <div
+          class="artifact-modal-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="artifact-modal-title"
+        >
+          <div class="artifact-modal-header">
+            <h2 id="artifact-modal-title" class="artifact-modal-title">TMYS Agentic Map</h2>
+            <button type="button" class="artifact-modal-close" data-artifact-close aria-label="Close">
+              &times;
+            </button>
+          </div>
+          <iframe class="artifact-modal-frame" title="TMYS Agentic Map" src="about:blank"></iframe>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const modal = document.getElementById("artifact-modal");
+          if (!modal) return;
+          const iframe = modal.querySelector(".artifact-modal-frame");
+          function openModal(src) {
+            iframe.src = src;
+            modal.hidden = false;
+            document.body.style.overflow = "hidden";
+          }
+          function closeModal() {
+            iframe.src = "about:blank";
+            modal.hidden = true;
+            document.body.style.overflow = "";
+          }
+          document.querySelectorAll(".artifact-popup-trigger").forEach((btn) => {
+            btn.addEventListener("click", () => openModal(btn.dataset.artifactSrc));
+          });
+          modal.querySelectorAll("[data-artifact-close]").forEach((el) => {
+            el.addEventListener("click", closeModal);
+          });
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !modal.hidden) closeModal();
+          });
+        })();
+      </script>
 
       <section class="contact">
         <h2>Contact</h2>
