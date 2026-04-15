@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI/ML Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <div class="hero-text">
+          <div class="name-row">
+            <img
+              src="{{ url_for('profile_photo') }}"
+              alt="Profile photo"
+              class="profile-pic"
+            />
+            <h1>Anubhav Dhawan</h1>
+          </div>
+          <p class="eyebrow">AI/ML Product Manager</p>
+          <p class="lead">
+            I turn AI/ML capabilities into real-world products that drive measurable business outcomes.
+          </p>
+          <p class="sublead">
+            AI Product Leader with 10+ years across Amazon, Deloitte, and Startups — building 0 → 1 and scaled solutions using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
+          </p>
+        </div>
+        <div class="stats">
+          <article class="stat-card">
+            <p class="value">10+</p>
+            <p class="label">AI/ML Products Shipped</p>
+          </article>
+          <article class="stat-card">
+            <p class="value">20+</p>
+            <p class="label">ML Models Built and Evaluated</p>
+          </article>
+          <article class="stat-card">
+            <p class="value">50+</p>
+            <p class="label">AI Use Cases Delivered</p>
+          </article>
+          <article class="stat-card">
+            <p class="value">50%+</p>
+            <p class="label">Efficiency Gains</p>
+          </article>
+        </div>
+      </header>
+
+      <section class="portfolio">
+        <h2>Portfolio</h2>
+        <p class="section-intro">AI/ML products, research, and passion projects.</p>
+
+        <div class="tabs" role="tablist" aria-label="Portfolio categories">
+          {% for category in categories %}
+          <button
+            class="tab-btn {% if loop.first %}active{% endif %}"
+            data-tab="{{ category|replace(' ', '-')|lower }}"
+            role="tab"
+            aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
+          >
+            {{ category }}
+          </button>
+          {% endfor %}
+        </div>
+
+        {% for category in categories %}
+        <section
+          class="category-panel {{ category|replace(' ', '-')|lower }} {% if loop.first %}active{% endif %}"
+          data-panel="{{ category|replace(' ', '-')|lower }}"
+          role="tabpanel"
+        >
+          <p class="category-description">{{ category_descriptions[category] }}</p>
+
+          <div class="cards">
+            {% for project in grouped_projects[category] %}
+            <article class="project-card">
+              <div class="card-top">
+                <span class="badge">{{ project.category }}</span>
+                <h4>{{ project.title }}</h4>
+                <p class="role">{{ project.role }}</p>
+              </div>
+
+              <div class="card-grid">
+                <div>
+                  <p class="label">Goal</p>
+                  <p>{{ project.goal }}</p>
+                </div>
+                <div>
+                  <p class="label">Impact</p>
+                  <p class="impact">{{ project.impact }}</p>
+                </div>
+                <div>
+                  <p class="label">Toolkit</p>
+                  <div class="toolkit">
+                    {% for tool in project.toolkit %}
+                    <span>{{ tool }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+              <p class="artifact"><strong>Artifact:</strong> {{ project.artifact }}</p>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+        {% endfor %}
+
+        <script>
+          const tabButtons = document.querySelectorAll(".tab-btn");
+          const panels = document.querySelectorAll(".category-panel");
+
+          tabButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const target = btn.dataset.tab;
+
+              tabButtons.forEach((b) => {
+                b.classList.remove("active");
+                b.setAttribute("aria-selected", "false");
+              });
+              panels.forEach((p) => p.classList.remove("active"));
+
+              btn.classList.add("active");
+              btn.setAttribute("aria-selected", "true");
+
+              const panel = document.querySelector(
+                `.category-panel[data-panel="${target}"]`
+              );
+              if (panel) {
+                panel.classList.add("active");
+              }
+            });
+          });
+        </script>
+      </section>
+
+      <section class="contact">
+        <h2>Contact</h2>
+        <p>Interested in working together or discussing AI/ML projects.</p>
+        <ul>
+          <li>Email: <a href="mailto:andhawan@tmys.ai">andhawan@tmys.ai</a></li>
+          <li>LinkedIn: <a href="https://www.linkedin.com/in/anubhav-dhawan-74537617/">View</a></li>
+          <li>GitHub: <a href="https://github.com/andhawan2025">View</a></li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+"use client"
+
+import { useState } from "react"
+import { ArrowUpRight, Target, Zap, Image as ImageIcon, User, Wrench } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { ArtifactModal } from "@/components/artifact-modal"
+import type { Project } from "@/lib/projects"
+
+interface ProjectCardProps {
+  project: Project
+  index: number
+}
+
+const categoryColors: Record<string, string> = {
+  Products: "bg-primary/20 text-primary",
+  Research: "bg-emerald-500/20 text-emerald-400",
+  "Fun Ventures": "bg-amber-500/20 text-amber-400",
+}
+
+const categoryBorderColors: Record<string, string> = {
+  Products: "hover:border-primary/50",
+  Research: "hover:border-emerald-500/50",
+  "Fun Ventures": "hover:border-amber-500/50",
+}
+
+export function ProjectCard({ project, index }: ProjectCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  return (
+    <>
+      <article
+        className={`group relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 ${categoryBorderColors[project.category]} hover:bg-card/80`}
+        style={{ animationDelay: `${index * 100}ms` }}
+      >
+        {/* Top Row: Badge, Title, Role, Index */}
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <Badge className={`font-mono text-xs border-0 ${categoryColors[project.category]}`}>
+                {project.category}
+              </Badge>
+              <h3 className="text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors sm:text-2xl">
+                {project.title}
+              </h3>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <User className="size-3.5" />
+              {project.role}
+            </div>
+          </div>
+          <span className="font-mono text-sm text-muted-foreground">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+
+        {/* Content Grid */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {/* Goal Section */}
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <Target className="size-3" />
+              Goal
+            </div>
+            <p className="text-sm leading-relaxed text-secondary-foreground">
+              {project.goal}
+            </p>
+          </div>
+
+          {/* Impact Section */}
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <Zap className="size-3" />
+              Impact
+            </div>
+            <p className="text-sm leading-relaxed text-primary">
+              {project.impact}
+            </p>
+          </div>
+
+          {/* Toolkit Section */}
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <Wrench className="size-3" />
+              Toolkit
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {project.toolkit.map((tool) => (
+                <span
+                  key={tool}
+                  className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Artifacts Link */}
+        <div className="mt-6 pt-4 border-t border-border">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline transition-colors"
+          >
+            <ImageIcon className="size-4" />
+            View Artifacts
+            <ArrowUpRight className="size-3" />
+          </button>
+        </div>
+
+        {/* Decorative corner accent */}
+        <div className="absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full bg-primary/5 transition-transform group-hover:translate-x-10 group-hover:-translate-y-10" />
+      </article>
+
+      <ArtifactModal
+        project={project}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
+  )
+}
