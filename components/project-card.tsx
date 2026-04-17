@@ -1,10 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowUpRight, Target, Zap, Image as ImageIcon, User, Wrench } from "lucide-react"
+import { ArrowUpRight, Target, Zap, Image as ImageIcon, User, Wrench, ExternalLink, Network } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { ArtifactModal } from "@/components/artifact-modal"
-import type { Project } from "@/lib/projects"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import type { Project, ProjectCategory } from "@/lib/projects"
 
 interface ProjectCardProps {
   project: Project
@@ -23,8 +29,23 @@ const categoryBorderColors: Record<string, string> = {
   "Fun Ventures": "hover:border-amber-500/50",
 }
 
+/** Match portfolio tab active colors (`projects-grid` categoryConfig). */
+const categoryImpactTextClass: Record<ProjectCategory, string> = {
+  Products: "text-primary marker:text-primary",
+  Research: "text-emerald-500 marker:text-emerald-500",
+  "Fun Ventures": "text-amber-500 marker:text-amber-500",
+}
+
+function hasArtifactModalContent(project: Project) {
+  return project.artifacts.some(
+    (a) => a.images.length > 0 || Boolean(a.title?.trim())
+  )
+}
+
 export function ProjectCard({ project, index }: ProjectCardProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isArtifactModalOpen, setIsArtifactModalOpen] = useState(false)
+  const [isTmysFrameOpen, setIsTmysFrameOpen] = useState(false)
+  const showArtifactButton = hasArtifactModalContent(project)
 
   return (
     <>
@@ -32,7 +53,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         className={`group relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 ${categoryBorderColors[project.category]} hover:bg-card/80`}
         style={{ animationDelay: `${index * 100}ms` }}
       >
-        {/* Top Row: Badge, Title, Role, Index */}
         <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
@@ -53,9 +73,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </span>
         </div>
 
-        {/* Content Grid */}
         <div className="grid gap-6 md:grid-cols-3">
-          {/* Goal Section */}
           <div>
             <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               <Target className="size-3" />
@@ -66,18 +84,28 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             </p>
           </div>
 
-          {/* Impact Section */}
           <div>
             <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               <Zap className="size-3" />
               Impact
             </div>
-            <p className="text-sm leading-relaxed text-primary">
-              {project.impact}
-            </p>
+            {project.impactBullets && project.impactBullets.length > 0 ? (
+              <ul
+                className={`list-inside list-disc space-y-1.5 text-sm leading-relaxed ${categoryImpactTextClass[project.category]}`}
+              >
+                {project.impactBullets.map((line) => (
+                  <li key={line} className="pl-0.5">
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className={`text-sm leading-relaxed ${categoryImpactTextClass[project.category]}`}>
+                {project.impact ?? ""}
+              </p>
+            )}
           </div>
 
-          {/* Toolkit Section */}
           <div>
             <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               <Wrench className="size-3" />
@@ -96,27 +124,69 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </div>
         </div>
 
-        {/* Artifacts Link */}
-        <div className="mt-6 pt-4 border-t border-border">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline transition-colors"
-          >
-            <ImageIcon className="size-4" />
-            View Artifacts
-            <ArrowUpRight className="size-3" />
-          </button>
+        <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
+          {showArtifactButton ? (
+            <button
+              type="button"
+              onClick={() => setIsArtifactModalOpen(true)}
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline transition-colors"
+            >
+              <ImageIcon className="size-4" />
+              View Artifacts
+              <ArrowUpRight className="size-3" />
+            </button>
+          ) : null}
+          {project.artifactLinks?.map((link) =>
+            link.kind === "external" ? (
+              <a
+                key={link.label}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline transition-colors"
+              >
+                <ExternalLink className="size-4" />
+                {link.label}
+                <ArrowUpRight className="size-3" />
+              </a>
+            ) : (
+              <button
+                key={link.label}
+                type="button"
+                onClick={() => setIsTmysFrameOpen(true)}
+                className="inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline transition-colors"
+              >
+                <Network className="size-4" />
+                {link.label}
+                <ArrowUpRight className="size-3" />
+              </button>
+            )
+          )}
         </div>
 
-        {/* Decorative corner accent */}
         <div className="absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full bg-primary/5 transition-transform group-hover:translate-x-10 group-hover:-translate-y-10" />
       </article>
 
-      <ArtifactModal
-        project={project}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      {showArtifactButton ? (
+        <ArtifactModal
+          project={project}
+          isOpen={isArtifactModalOpen}
+          onClose={() => setIsArtifactModalOpen(false)}
+        />
+      ) : null}
+
+      <Dialog open={isTmysFrameOpen} onOpenChange={setIsTmysFrameOpen}>
+        <DialogContent className="max-h-[90vh] w-[min(100vw-2rem,72rem)] max-w-[min(100vw-2rem,72rem)] gap-0 overflow-hidden border-border bg-card p-0">
+          <DialogHeader className="border-b border-border px-4 py-3 text-left">
+            <DialogTitle className="text-base font-semibold">TMYS Agentic Map</DialogTitle>
+          </DialogHeader>
+          <iframe
+            title="TMYS architecture"
+            src="/tmys-architecture.html"
+            className="h-[min(80vh,720px)] w-full border-0 bg-[#0d1117]"
+          />
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

@@ -1,101 +1,44 @@
-import { Github, Linkedin, Mail, Twitter } from "lucide-react"
+import { ProfileAvatar } from "@/components/profile-avatar"
+import { heroStats } from "@/lib/hero-stats"
+
+/**
+ * Matches `templates/index.html` + `static/styles.css` (`.hero`, `.hero-text`, `.name-row`, `.eyebrow`, `.lead`, `.sublead`, `.stats`, `.stat-card`).
+ * Stat copy lives in `app.py` (`HERO_STATS`) and `lib/hero-stats.ts` — keep them aligned.
+ */
 
 export function HeroSection() {
   return (
-    <header className="relative border-b border-border">
-      <div className="mx-auto max-w-6xl px-6 py-20 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-          {/* Left Column - Text Content */}
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <p className="font-mono text-sm text-primary tracking-wider">
-                AI/ML Product Manager
-              </p>
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance">
-                Your Name
-              </h1>
-            </div>
-
-            <p className="max-w-xl text-lg leading-relaxed text-muted-foreground text-pretty">
-              Turning AI/ML capabilities into products that matter. 
-              I bridge the gap between cutting-edge research and real-world 
-              business impact.
-            </p>
-
-            <p className="text-secondary-foreground leading-relaxed">
-              {"I've"} led AI product initiatives from 0-to-1, collaborated with 
-              world-class research teams, and shipped ML-powered features to 
-              millions of users. I love making complex technology accessible 
-              and valuable.
-            </p>
-
-            {/* Social Links */}
-            <div className="flex items-center gap-4 pt-4">
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="size-5" />
-              </a>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="size-5" />
-              </a>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                aria-label="GitHub"
-              >
-                <Github className="size-5" />
-              </a>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Email"
-              >
-                <Mail className="size-5" />
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column - Stats */}
-          <div className="hidden lg:block">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg border border-border bg-card p-6">
-                <p className="font-mono text-3xl font-bold text-primary">10+</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Products Shipped
-                </p>
-              </div>
-              <div className="rounded-lg border border-border bg-card p-6">
-                <p className="font-mono text-3xl font-bold text-primary">$25M+</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Revenue Impact
-                </p>
-              </div>
-              <div className="rounded-lg border border-border bg-card p-6">
-                <p className="font-mono text-3xl font-bold text-primary">3</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Research Papers
-                </p>
-              </div>
-              <div className="rounded-lg border border-border bg-card p-6">
-                <p className="font-mono text-3xl font-bold text-primary">50M+</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Users Reached
-                </p>
-              </div>
-            </div>
-          </div>
+    <header className="grid grid-cols-1 gap-6 border-b border-border pb-7 lg:grid-cols-[1.5fr_1fr] lg:gap-6">
+      <div className="min-w-0">
+        <div className="flex items-center gap-3">
+          <ProfileAvatar />
+          <h1 className="m-0 min-w-0 flex-1 text-[clamp(1.75rem,4vw,2.8rem)] font-bold leading-tight tracking-tight text-foreground">
+            Anubhav Dhawan
+          </h1>
         </div>
+        <p className="my-2 ml-[88px] text-[0.8rem] font-normal uppercase leading-normal tracking-[0.08em] text-primary lg:ml-[104px]">
+          AI/ML Product Manager & Consultant
+        </p>
+        <p className="mb-3 text-[1.1rem] leading-[1.7] text-muted-foreground">
+          I turn AI/ML capabilities into real-world products that drive measurable business outcomes.
+        </p>
+        <p className="leading-[1.7] text-foreground">
+          AI Product Leader with 10+ years across Amazon, Deloitte, and Startups — building 0 → 1 and scaled
+          solutions using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
+        </p>
       </div>
 
-      {/* Decorative gradient line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      <div className="grid grid-cols-2 gap-3">
+        {heroStats.map(({ value, label }) => (
+          <article
+            key={label}
+            className="flex h-[148px] w-full flex-col items-center justify-center gap-1 rounded-xl border border-border bg-card px-3 py-3 text-center"
+          >
+            <p className="m-0 text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold leading-none text-primary">{value}</p>
+            <p className="max-w-[11rem] text-pretty text-[0.88rem] leading-snug text-muted-foreground">{label}</p>
+          </article>
+        ))}
+      </div>
     </header>
   )
 }

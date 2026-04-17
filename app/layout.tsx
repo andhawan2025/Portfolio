@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'AI/ML Portfolio',
-  description: 'Showcasing innovative AI and machine learning projects',
+  title: 'Anubhav Dhawan — AI/ML Portfolio',
+  description: 'AI/ML product leadership — enterprise search, industrial AI, fraud, personalization, and research.',
   generator: 'v0.app',
   icons: {
     icon: [

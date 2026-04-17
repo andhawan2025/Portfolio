@@ -29,14 +29,13 @@ export function ProjectsGrid() {
   const config = categoryConfig[activeCategory]
 
   return (
-    <section className="mx-auto max-w-5xl px-6 py-16 lg:py-24">
-      {/* Section Header */}
+    <section className="mt-9">
       <div className="mb-10">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Portfolio
         </h2>
         <p className="mt-2 text-muted-foreground">
-          AI/ML products, research, and passion projects {"I've"} led and contributed to
+          AI/ML products, research, and passion projects.
         </p>
       </div>
 

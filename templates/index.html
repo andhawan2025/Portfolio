@@ -27,22 +27,12 @@
           </p>
         </div>
         <div class="stats">
+          {% for stat in hero_stats %}
           <article class="stat-card">
-            <p class="value">10+</p>
-            <p class="label">AI/ML Products Shipped</p>
+            <p class="value">{{ stat.value }}</p>
+            <p class="label">{{ stat.label }}</p>
           </article>
-          <article class="stat-card">
-            <p class="value">20+</p>
-            <p class="label">ML Models Built and Evaluated</p>
-          </article>
-          <article class="stat-card">
-            <p class="value">50+</p>
-            <p class="label">AI Use Cases Delivered</p>
-          </article>
-          <article class="stat-card">
-            <p class="value">50%+</p>
-            <p class="label">Efficiency Gains</p>
-          </article>
+          {% endfor %}
         </div>
       </header>
 

@@ -9,6 +9,7 @@ PROFILE_IMAGE_PATH = (
 )
 
 
+# When using the Next app, mirror changes in lib/projects.ts (single source of truth for the Node site).
 PROJECTS = [
     {
         "id": "neural-search",
@@ -28,57 +29,6 @@ PROJECTS = [
         "artifact": "Product Roadmap & GTM Strategy",
     },
     {
-        "id": "predictive-maintenance",
-        "title": "Industrial AI Platform",
-        "category": "Products",
-        "goal": "Define and ship a predictive maintenance SaaS product for manufacturing, enabling factories to prevent equipment failures before they happen.",
-        "impact": "Reduced customer unplanned downtime by 63%. Product achieved $2.4M in annual cost savings for pilot customers.",
-        "role": "Senior PM",
-        "toolkit": [
-            "Time Series Forecasting",
-            "Anomaly Detection",
-            "LSTM Networks",
-            "Sensor Data Pipelines",
-            "Edge ML",
-            "Predictive Analytics",
-        ],
-        "artifact": "Customer Journey & Feature Specs",
-    },
-    {
-        "id": "fraud-detection",
-        "title": "Real-time Fraud Shield",
-        "category": "Products",
-        "goal": "Launch a real-time fraud detection API for fintech companies, balancing security with seamless user experience.",
-        "impact": "Blocked $18M in fraudulent transactions across customer base. Achieved 99.7% precision with sub-100ms latency.",
-        "role": "Product Manager",
-        "toolkit": [
-            "Real-time ML Inference",
-            "Gradient Boosting",
-            "Feature Engineering",
-            "Graph Neural Networks",
-            "Behavioral Analytics",
-            "Rule Engine Hybrid",
-        ],
-        "artifact": "API Design & Integration Docs",
-    },
-    {
-        "id": "recommendation-engine",
-        "title": "Personalization Engine",
-        "category": "Products",
-        "goal": "Build and scale a personalization platform for e-commerce, driving revenue through intelligent product recommendations.",
-        "impact": "Increased client conversion rates by 22%. Platform now powers recommendations for 50M+ monthly active users.",
-        "role": "Product Lead",
-        "toolkit": [
-            "Collaborative Filtering",
-            "Matrix Factorization",
-            "Deep Learning Recommenders",
-            "Multi-Armed Bandits",
-            "Real-time Personalization",
-            "CTR Prediction",
-        ],
-        "artifact": "A/B Testing Framework & Results",
-    },
-    {
         "id": "medical-imaging",
         "title": "AI-Assisted Radiology Research",
         "category": "Research",
@@ -94,40 +44,6 @@ PROJECTS = [
             "Model Validation",
         ],
         "artifact": "Research Publication & Findings",
-    },
-    {
-        "id": "llm-safety",
-        "title": "LLM Safety & Alignment Study",
-        "category": "Research",
-        "goal": "Lead a cross-functional research initiative on LLM safety, developing frameworks for responsible AI deployment in enterprise contexts.",
-        "impact": "Framework adopted by 12 organizations. Presented findings at NeurIPS workshop.",
-        "role": "Research Lead",
-        "toolkit": [
-            "RLHF",
-            "Red Teaming",
-            "Prompt Injection Detection",
-            "Constitutional AI",
-            "Evaluation Benchmarks",
-            "Guardrails",
-        ],
-        "artifact": "Safety Framework & Guidelines",
-    },
-    {
-        "id": "synthetic-data",
-        "title": "Privacy-Preserving ML Research",
-        "category": "Research",
-        "goal": "Academic collaboration exploring synthetic data generation techniques for training ML models while preserving user privacy.",
-        "impact": "Paper accepted at ICML. Methodology enables GDPR-compliant ML training with 15% accuracy improvement.",
-        "role": "Co-Author",
-        "toolkit": [
-            "Differential Privacy",
-            "GANs for Synthetic Data",
-            "Federated Learning",
-            "Privacy Budgets",
-            "Statistical Validation",
-            "Data Augmentation",
-        ],
-        "artifact": "Research Paper & Methodology",
     },
     {
         "id": "tmys",
@@ -175,6 +91,14 @@ CATEGORY_DESCRIPTIONS = {
     "Fun Ventures": "Personal projects, hackathons, and weekend experiments.",
 }
 
+# Hero stat cards — keep in sync with `lib/hero-stats.ts` for the Next app.
+HERO_STATS = [
+    {"value": "10+", "label": "AI/ML Products Shipped"},
+    {"value": "20+", "label": "ML Models Built and Evaluated"},
+    {"value": "50+", "label": "AI Use Cases Delivered"},
+    {"value": "50%+", "label": "Efficiency Gains"},
+]
+
 
 @app.route("/")
 def home():
@@ -188,6 +112,7 @@ def home():
         categories=categories,
         grouped_projects=grouped,
         category_descriptions=CATEGORY_DESCRIPTIONS,
+        hero_stats=HERO_STATS,
     )
 
 
