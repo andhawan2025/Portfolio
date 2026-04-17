@@ -2,7 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
   "main": ".open-next/worker.js",
-  // Runs before `wrangler deploy` so `.open-next/worker.js` exists (uses npm so PATH need not include pnpm).
+  // Cloudflare Workers Builds does NOT run wrangler custom builds (build.command is ignored there).
+  // Dashboard: Build command = "npm ci && npm run build:cf", Deploy command = "npx wrangler deploy"
+  // Or a single deploy step: "npm run deploy" (see package.json).
+  // This block still helps local `wrangler deploy` when OpenNext delegation is not used.
   "build": {
     "command": "npm run build:cf"
   },
