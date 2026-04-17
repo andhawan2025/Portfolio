@@ -2,10 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
   "main": ".open-next/worker.js",
-  // Cloudflare Workers Builds does NOT run wrangler custom builds (build.command is ignored there).
-  // Dashboard: Build command = "npm ci && npm run build:cf", Deploy command = "npx wrangler deploy"
-  // Or a single deploy step: "npm run deploy" (see package.json).
-  // This block still helps local `wrangler deploy` when OpenNext delegation is not used.
+  // Workers Builds ignores wrangler "build.command". Default "npx wrangler deploy" also skips your
+  // build and delegates to opennextjs-cloudflare deploy, which then fails without .open-next/.
+  // Set Deploy command to ONE of:
+  //   npm run deploy
+  //   node scripts/cloudflare-deploy.mjs
+  // Optional Build command: "npm ci" (or "pnpm install --frozen-lockfile"); deploy script builds if needed.
+  // This "build" block still helps local `wrangler deploy` when OpenNext delegation is not used.
   "build": {
     "command": "npm run build:cf"
   },
