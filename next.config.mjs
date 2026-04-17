@@ -4,7 +4,6 @@ initOpenNextCloudflareForDev()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/portfolio",
   typescript: {
     ignoreBuildErrors: true,
   },
