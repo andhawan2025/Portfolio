@@ -13,6 +13,13 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import type { Project } from "@/lib/projects"
+import {
+  categoryBadgeClass,
+  categoryModalDotActiveClass,
+  categoryModalNavHoverClass,
+  categoryModalSlideBadgeClass,
+  categoryToolkitPillClass,
+} from "@/lib/category-styles"
 
 interface ArtifactModalProps {
   project: Project
@@ -67,6 +74,7 @@ export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) 
   }
 
   const skills = project.skills ?? []
+  const cat = project.category
 
   if (slides.length === 0) {
     return (
@@ -91,10 +99,10 @@ export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) 
         <DialogHeader className="p-6 pb-4 border-b border-border">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="font-mono text-xs">
+              <Badge variant="secondary" className={`font-mono text-xs border-0 ${categoryBadgeClass[cat]}`}>
                 {project.category}
               </Badge>
-              <Badge variant="outline" className="font-mono text-xs border-primary/30 text-primary">
+              <Badge variant="outline" className={`font-mono text-xs ${categoryModalSlideBadgeClass[cat]}`}>
                 {currentSlide + 1} of {slides.length}
               </Badge>
             </div>
@@ -131,7 +139,7 @@ export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) 
                   variant="secondary"
                   size="icon"
                   onClick={goToPrevious}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 size-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className={`absolute left-4 top-1/2 -translate-y-1/2 size-12 rounded-full border border-border bg-background/80 backdrop-blur-sm transition-colors ${categoryModalNavHoverClass[cat]}`}
                 >
                   <ChevronLeft className="size-6" />
                   <span className="sr-only">Previous slide</span>
@@ -141,7 +149,7 @@ export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) 
                   variant="secondary"
                   size="icon"
                   onClick={goToNext}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 size-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className={`absolute right-4 top-1/2 -translate-y-1/2 size-12 rounded-full border border-border bg-background/80 backdrop-blur-sm transition-colors ${categoryModalNavHoverClass[cat]}`}
                 >
                   <ChevronRight className="size-6" />
                   <span className="sr-only">Next slide</span>
@@ -166,7 +174,7 @@ export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) 
                   onClick={() => goToSlide(index)}
                   className={`size-3 rounded-full transition-all ${
                     index === currentSlide
-                      ? "bg-primary scale-110"
+                      ? `${categoryModalDotActiveClass[cat]} scale-110`
                       : "bg-border hover:bg-muted-foreground"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
@@ -211,7 +219,7 @@ export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) 
                 {project.toolkit.slice(0, 4).map((tool) => (
                   <span
                     key={tool}
-                    className="rounded-md bg-primary/20 px-2 py-0.5 font-mono text-xs text-primary"
+                    className={`rounded-md px-2 py-0.5 font-mono text-xs ${categoryToolkitPillClass[cat]}`}
                   >
                     {tool}
                   </span>
