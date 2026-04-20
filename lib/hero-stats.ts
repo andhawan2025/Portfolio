@@ -1,4 +1,4 @@
-/** Hero stat cards — keep in sync with `HERO_STATS` in `app.py`. */
+/** Hero stat cards shown on the portfolio page. */
 export const heroStats: { value: string; label: string }[] = [
   { value: "10+", label: "AI/ML Products Shipped" },
   { value: "20+", label: "ML Models Built and Evaluated" },

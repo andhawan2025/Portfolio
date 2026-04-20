@@ -1,6 +1,4 @@
-/**
- * Portfolio project data — keep in sync with app.py PROJECTS and CATEGORY_DESCRIPTIONS.
- */
+/** Portfolio project data and category copy. */
 export type ProjectCategory = "Products" | "Research" | "Passion Projects"
 
 export type ArtifactLink =

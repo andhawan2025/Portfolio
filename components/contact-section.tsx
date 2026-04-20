@@ -1,6 +1,4 @@
-/**
- * Matches `index.html` `.contact` block (email, LinkedIn, GitHub).
- */
+/** Contact links (email, LinkedIn, GitHub). */
 export function ContactSection() {
   return (
     <section className="mt-[42px] border-t border-border pt-[18px]">
