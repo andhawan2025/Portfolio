@@ -1,5 +1,5 @@
 /**
- * Matches `templates/index.html` `.contact` block (email, LinkedIn, GitHub).
+ * Matches `index.html` `.contact` block (email, LinkedIn, GitHub).
  */
 export function ContactSection() {
   return (

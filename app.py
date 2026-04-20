@@ -1,7 +1,7 @@
 from flask import Flask, render_template, send_file
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=".")
 PROFILE_IMAGE_PATH = (
     r"C:\Users\andha\.cursor\projects\d-srcCode\assets\c__Users_andha_AppData_"
     r"Roaming_Cursor_User_workspaceStorage_42e7ca6935e8e34c378e812572766b64_"
@@ -124,7 +124,7 @@ def profile_photo():
 @app.route("/tmys-architecture")
 def tmys_architecture():
     """Agent map shown in portfolio modal; keep in sync with templates/TMYSAgentMap.html."""
-    return render_template("TMYSArchitecture.html")
+    return render_template("templates/TMYSArchitecture.html")
 
 
 if __name__ == "__main__":

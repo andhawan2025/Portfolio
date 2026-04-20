@@ -1,7 +1,7 @@
 import { ProfileAvatar } from "@/components/profile-avatar"
 
 /**
- * Matches `templates/index.html` + `static/styles.css` (`.hero`, `.hero-text`, `.name-row`, `.eyebrow`, `.lead`, `.sublead`, `.stats`, `.stat-card`).
+ * Matches `index.html` + `static/styles.css` (`.hero`, `.hero-text`, `.name-row`, `.eyebrow`, `.lead`, `.sublead`, `.stats`, `.stat-card`).
  * Stat copy lives in `app.py` (`HERO_STATS`) and `lib/hero-stats.ts` — keep them aligned.
  */
 
