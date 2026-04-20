@@ -31,12 +31,32 @@ function hasArtifactModalContent(project: Project) {
   )
 }
 
+function projectWithSingleArtifact(project: Project, artifactIndex: number): Project {
+  const slice = project.artifacts[artifactIndex]
+  if (!slice) return project
+  return { ...project, artifacts: [slice] }
+}
+
 export function ProjectCard({ project, index }: ProjectCardProps) {
   const [isArtifactModalOpen, setIsArtifactModalOpen] = useState(false)
+  /** When set, modal shows only this artifact’s slides; when null, full `project` artifacts. */
+  const [artifactModalProject, setArtifactModalProject] = useState<Project | null>(null)
   const [isTmysFrameOpen, setIsTmysFrameOpen] = useState(false)
-  const showArtifactButton = hasArtifactModalContent(project)
+  const undisclosedArtifacts = project.artifactModalUndisclosed === true
+  const showArtifactButton = hasArtifactModalContent(project) && !undisclosedArtifacts
+  const artifactGroups = project.artifactModalGroups ?? []
   const cat = project.category
   const linkClass = `inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline transition-colors ${categoryLinkClass[cat]}`
+
+  const openArtifactModalGroup = (artifactIndex: number) => {
+    setArtifactModalProject(projectWithSingleArtifact(project, artifactIndex))
+    setIsArtifactModalOpen(true)
+  }
+
+  const closeArtifactModal = () => {
+    setIsArtifactModalOpen(false)
+    setArtifactModalProject(null)
+  }
 
   return (
     <>
@@ -118,12 +138,43 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
-          {showArtifactButton ? (
-            <button type="button" onClick={() => setIsArtifactModalOpen(true)} className={linkClass}>
-              <ImageIcon className="size-4" />
-              View Artifacts
-              <ArrowUpRight className="size-3" />
-            </button>
+          {undisclosedArtifacts ? (
+            <span
+              className="inline-flex max-w-full flex-wrap items-center gap-2 text-sm text-muted-foreground"
+              aria-disabled
+            >
+              <ImageIcon className="size-4 shrink-0 opacity-50" />
+              <span className="font-medium">View Artifacts</span>
+              <span className="font-normal">(undisclosed due to proprietary reasons.)</span>
+            </span>
+          ) : showArtifactButton ? (
+            <>
+              {artifactGroups.length > 0 ? (
+                <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                  <ImageIcon className="size-4 shrink-0 opacity-70" aria-hidden />
+                  <span className="font-medium">View Artifacts</span>
+                </span>
+              ) : (
+                <button type="button" onClick={() => setIsArtifactModalOpen(true)} className={linkClass}>
+                  <ImageIcon className="size-4" />
+                  View Artifacts
+                  <ArrowUpRight className="size-3" />
+                </button>
+              )}
+              {artifactGroups.length > 0
+                ? artifactGroups.map(({ label, artifactIndex }) => (
+                    <button
+                      key={label}
+                      type="button"
+                      onClick={() => openArtifactModalGroup(artifactIndex)}
+                      className={linkClass}
+                    >
+                      {label}
+                      <ArrowUpRight className="size-3" />
+                    </button>
+                  ))
+                : null}
+            </>
           ) : null}
           {project.artifactLinks?.map((link) =>
             link.kind === "external" ? (
@@ -160,9 +211,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
       {showArtifactButton ? (
         <ArtifactModal
-          project={project}
+          project={artifactModalProject ?? project}
           isOpen={isArtifactModalOpen}
-          onClose={() => setIsArtifactModalOpen(false)}
+          onClose={closeArtifactModal}
+          variant={artifactModalProject ? "minimal" : "default"}
         />
       ) : null}
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import {
@@ -25,6 +25,8 @@ interface ArtifactModalProps {
   project: Project
   isOpen: boolean
   onClose: () => void
+  /** Subset slides only: wide chrome-free viewer (image, arrows, dots). */
+  variant?: "default" | "minimal"
 }
 
 type Slide = { image: string; title: string; description: string }
@@ -50,9 +52,13 @@ function buildSlides(project: Project): Slide[] {
   })
 }
 
-export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) {
+export function ArtifactModal({ project, isOpen, onClose, variant = "default" }: ArtifactModalProps) {
   const slides = useMemo(() => buildSlides(project), [project])
   const [currentSlide, setCurrentSlide] = useState(0)
+
+  useEffect(() => {
+    setCurrentSlide(0)
+  }, [project])
 
   const goToPrevious = () => {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
@@ -92,6 +98,80 @@ export function ArtifactModal({ project, isOpen, onClose }: ArtifactModalProps) 
   const currentSlideData = slides[currentSlide]
   const singleSlide = slides.length === 1
   const hasImage = Boolean(currentSlideData.image)
+
+  if (variant === "minimal") {
+    const showNav = slides.length > 1
+    return (
+      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+        <DialogContent className="max-h-[95vh] max-w-[min(100vw-1rem,128rem)] w-full gap-0 overflow-hidden border-border bg-card p-0 sm:max-w-[min(100vw-2rem,128rem)]">
+          <DialogTitle className="sr-only">
+            {currentSlideData.title} — slide {currentSlide + 1} of {slides.length}
+          </DialogTitle>
+          <div className="relative flex w-full flex-col">
+            <div className="relative flex w-full items-center justify-center bg-secondary/40 px-4 py-6">
+              <div className="relative mx-auto h-[min(85vh,920px)] w-full max-w-[120rem]">
+                {hasImage ? (
+                  <Image
+                    src={currentSlideData.image}
+                    alt={`${currentSlideData.title} — slide ${currentSlide + 1}`}
+                    fill
+                    className="object-contain object-center"
+                    crossOrigin="anonymous"
+                    priority
+                    sizes="(max-width: 128rem) 100vw, 128rem"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-8 text-center">
+                    <p className="text-sm font-medium text-foreground">{currentSlideData.title}</p>
+                    <p className="max-w-lg text-sm text-muted-foreground">{currentSlideData.description}</p>
+                  </div>
+                )}
+
+                {showNav ? (
+                  <>
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      onClick={goToPrevious}
+                      className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 sm:left-4 ${categoryModalNavHoverClass[cat]} size-12 rounded-full border border-border bg-background/90 backdrop-blur-sm`}
+                    >
+                      <ChevronLeft className="size-6" />
+                      <span className="sr-only">Previous slide</span>
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      onClick={goToNext}
+                      className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 sm:right-4 ${categoryModalNavHoverClass[cat]} size-12 rounded-full border border-border bg-background/90 backdrop-blur-sm`}
+                    >
+                      <ChevronRight className="size-6" />
+                      <span className="sr-only">Next slide</span>
+                    </Button>
+                  </>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="flex justify-center gap-2 bg-background/80 py-4">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => goToSlide(index)}
+                  className={`size-3 rounded-full transition-all ${
+                    index === currentSlide
+                      ? `${categoryModalDotActiveClass[cat]} scale-110`
+                      : "bg-border hover:bg-muted-foreground"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>

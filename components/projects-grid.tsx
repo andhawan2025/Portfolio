@@ -11,9 +11,9 @@ const categoryConfig: Record<ProjectCategory, { icon: React.ReactNode; activeCla
     icon: <Briefcase className="size-4" />, 
     activeClass: "border-primary text-primary" 
   },
-  Research: { 
-    icon: <GraduationCap className="size-4" />, 
-    activeClass: "border-emerald-500 text-emerald-500" 
+  "Academics/Research": {
+    icon: <GraduationCap className="size-4" />,
+    activeClass: "border-emerald-500 text-emerald-500",
   },
   "Passion Projects": { 
     icon: <Sparkles className="size-4" />, 
@@ -21,7 +21,7 @@ const categoryConfig: Record<ProjectCategory, { icon: React.ReactNode; activeCla
   },
 }
 
-const categories: ProjectCategory[] = ["Products", "Research", "Passion Projects"]
+const categories: ProjectCategory[] = ["Products", "Academics/Research", "Passion Projects"]
 
 export function ProjectsGrid() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("Products")
