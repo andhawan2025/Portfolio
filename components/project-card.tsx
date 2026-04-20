@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import type { Project } from "@/lib/projects"
+import { portfolioPath } from "@/lib/site-paths"
 import {
   categoryBadgeClass,
   categoryBorderHoverClass,
@@ -170,7 +171,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           <DialogTitle className="sr-only">TMYS Agentic Map</DialogTitle>
           <iframe
             title="TMYS architecture"
-            src="/tmys-architecture.html"
+            src={portfolioPath("/tmys-architecture.html")}
             className="h-full min-h-0 w-full flex-1 border-0 bg-[#0d1117]"
           />
         </DialogContent>

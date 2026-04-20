@@ -1,4 +1,5 @@
 import { ProfileAvatar } from "@/components/profile-avatar"
+import { portfolioPath } from "@/lib/site-paths"
 
 /** Hero copy and layout; stat cards from `lib/hero-stats.ts`. */
 
@@ -15,10 +16,7 @@ export function HeroSection() {
         <p className="my-2 ml-[88px] text-[0.8rem] font-normal uppercase leading-normal tracking-[0.08em] text-primary lg:ml-[104px]">
           AI/ML Product Management & Consulting
         </p>
-        <p className="mb-3 text-[1.1rem] leading-[1.7] text-muted-foreground">
-          I turn AI/ML capabilities into real-world products that drive measurable business outcomes.
-        </p>
-        <p className="leading-[1.7] text-foreground">
+        <p className="mt-3 leading-[1.7] text-foreground">
           AI Product Leader with over 15 years across Amazon, Deloitte, and Startups. Building 0 → 1 and scaled
           solutions using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
         </p>
@@ -27,7 +25,7 @@ export function HeroSection() {
       <div className="flex h-full w-full items-start justify-end lg:pt-[62px]">
         <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
           <img
-            src="/companylogos/Logos.png"
+            src={portfolioPath("/companylogos/Logos.png")}
             alt="Company and education logos"
             className="mx-auto h-auto w-[31rem] max-w-full rounded-xl object-contain"
           />

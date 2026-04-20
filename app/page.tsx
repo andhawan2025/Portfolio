@@ -1,16 +1,13 @@
-import { HeroSection } from "@/components/hero-section"
-import { ProjectsGrid } from "@/components/projects-grid"
-import { ContactSection } from "@/components/contact-section"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { PORTFOLIO_BASE } from "@/lib/site-paths"
 
-/** Main portfolio shell: width min(1100px, 92vw), vertical rhythm. */
-export default function PortfolioPage() {
+export default function HomePage() {
   return (
-    <main className="min-h-screen bg-background">
-      <div className="mx-auto w-[min(1100px,92vw)] pt-16 pb-16 sm:pt-20 sm:pb-16">
-        <HeroSection />
-        <ProjectsGrid />
-        <ContactSection />
-      </div>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
+      <Button asChild size="lg" className="text-base">
+        <Link href={PORTFOLIO_BASE}>Portfolio</Link>
+      </Button>
     </main>
   )
 }

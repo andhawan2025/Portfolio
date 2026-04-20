@@ -1,13 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { portfolioPath } from "@/lib/site-paths"
 
 const CANDIDATES = [
-  "/profile-photo.jpg",
-  "/profile-photo.jpeg",
-  "/profile-photo.png",
-  "/profile-photo.webp",
-  "/profile-photo.svg",
+  portfolioPath("/profile-photo.jpg"),
+  portfolioPath("/profile-photo.jpeg"),
+  portfolioPath("/profile-photo.png"),
+  portfolioPath("/profile-photo.webp"),
+  portfolioPath("/profile-photo.svg"),
 ] as const
 
 const FALLBACK_SVG = encodeURIComponent(

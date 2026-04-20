@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
-import { Analytics } from "@vercel/analytics/next"
 import { portfolioPath } from "@/lib/site-paths"
-import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "TMYS.ai",
-  description: "Tell Me Your Story",
+  title: "Anubhav Dhawan — AI/ML Portfolio",
+  description:
+    "AI/ML product leadership — enterprise search, industrial AI, fraud, personalization, and research.",
+  generator: "v0.app",
   icons: {
     icon: [
       {
@@ -25,17 +25,10 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default function PortfolioLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
-    <html lang="en" className="bg-background">
-      <body className="font-sans antialiased">
-        {children}
-        {process.env.NODE_ENV === "production" && <Analytics />}
-      </body>
-    </html>
-  )
+  return children
 }
