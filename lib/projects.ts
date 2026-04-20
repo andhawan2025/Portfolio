@@ -1,7 +1,7 @@
 /**
  * Portfolio project data — keep in sync with app.py PROJECTS and CATEGORY_DESCRIPTIONS.
  */
-export type ProjectCategory = "Products" | "Research" | "Fun Ventures"
+export type ProjectCategory = "Products" | "Research" | "Passion Projects"
 
 export type ArtifactLink =
   | { kind: "external"; label: string; url: string }
@@ -22,7 +22,7 @@ export interface Project {
   skills?: string[]
   /** Artifact titles / image galleries for the modal. */
   artifacts: { title: string; description: string; images: string[] }[]
-  /** Extra links for Fun Ventures (TMYS demo + architecture). */
+  /** Extra links for Passion Projects (TMYS demo + architecture). */
   artifactLinks?: ArtifactLink[]
 }
 
@@ -70,7 +70,7 @@ export const projects: Project[] = [
   {
     id: "tmys",
     title: "Tell Me Your Story (TMYS)",
-    category: "Fun Ventures",
+    category: "Passion Projects",
     role: "Experimenter / AI Product Builder",
     goal:
       "Build an AI-native content platform that transforms user prompts into fully generated video stories with character consistency — automating the end-to-end pipeline from screenplay creation to final video production and distribution.",
@@ -101,5 +101,5 @@ export const projects: Project[] = [
 export const categoryDescriptions: Record<ProjectCategory, string> = {
   Products: "Commercial AI/ML products led from concept to launch.",
   Research: "Academic collaborations and research initiatives.",
-  "Fun Ventures": "Personal projects, hackathons, and weekend experiments.",
+  "Passion Projects": "Self learning and AI experimentation initiatives.",
 }

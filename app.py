@@ -48,7 +48,7 @@ PROJECTS = [
     {
         "id": "tmys",
         "title": "Tell Me Your Story (TMYS)",
-        "category": "Fun Ventures",
+        "category": "Passion Projects",
         "role": "Experimenter / AI Product Builder",
         "goal": (
             "Build an AI-native content platform that transforms user prompts into fully "
@@ -88,7 +88,7 @@ PROJECTS = [
 CATEGORY_DESCRIPTIONS = {
     "Products": "Commercial AI/ML products led from concept to launch.",
     "Research": "Academic collaborations and research initiatives.",
-    "Fun Ventures": "Personal projects, hackathons, and weekend experiments.",
+    "Passion Projects": "",
 }
 
 # Hero stat cards — keep in sync with `lib/hero-stats.ts` for the Next app.
@@ -102,7 +102,7 @@ HERO_STATS = [
 
 @app.route("/")
 def home():
-    categories = ["Products", "Research", "Fun Ventures"]
+    categories = ["Products", "Research", "Passion Projects"]
     grouped = {category: [] for category in categories}
     for project in PROJECTS:
         grouped[project["category"]].append(project)

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ProjectCard } from "@/components/project-card"
 import { projects, categoryDescriptions, type ProjectCategory } from "@/lib/projects"
+import { heroStats } from "@/lib/hero-stats"
 import { Briefcase, GraduationCap, Sparkles } from "lucide-react"
 
 const categoryConfig: Record<ProjectCategory, { icon: React.ReactNode; activeClass: string }> = {
@@ -14,19 +15,18 @@ const categoryConfig: Record<ProjectCategory, { icon: React.ReactNode; activeCla
     icon: <GraduationCap className="size-4" />, 
     activeClass: "border-emerald-500 text-emerald-500" 
   },
-  "Fun Ventures": { 
+  "Passion Projects": { 
     icon: <Sparkles className="size-4" />, 
     activeClass: "border-amber-500 text-amber-500" 
   },
 }
 
-const categories: ProjectCategory[] = ["Products", "Research", "Fun Ventures"]
+const categories: ProjectCategory[] = ["Products", "Research", "Passion Projects"]
 
 export function ProjectsGrid() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("Products")
   
   const categoryProjects = projects.filter((p) => p.category === activeCategory)
-  const config = categoryConfig[activeCategory]
 
   return (
     <section className="mt-9">
@@ -34,9 +34,6 @@ export function ProjectsGrid() {
         <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Portfolio
         </h2>
-        <p className="mt-2 text-muted-foreground">
-          AI/ML products, research, and passion projects.
-        </p>
       </div>
 
       {/* Tabs */}
@@ -65,9 +62,19 @@ export function ProjectsGrid() {
       </div>
 
       {/* Category Description */}
-      <p className="mb-8 text-sm text-muted-foreground max-w-2xl">
-        {categoryDescriptions[activeCategory]}
-      </p>
+      <div className="mb-8 max-w-4xl">
+        <p className="text-sm text-muted-foreground">{categoryDescriptions[activeCategory]}</p>
+        {activeCategory === "Products" ? (
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            {heroStats.map(({ value, label }, index) => (
+              <span key={label}>
+                <span className="font-semibold text-primary">{value}</span> {label}
+                {index < heroStats.length - 1 ? " | " : ""}
+              </span>
+            ))}
+          </p>
+        ) : null}
+      </div>
 
       {/* Projects - Full Width */}
       <div className="flex flex-col gap-6">

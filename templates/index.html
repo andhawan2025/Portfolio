@@ -18,12 +18,12 @@
             />
             <h1>Anubhav Dhawan</h1>
           </div>
-          <p class="eyebrow">AI/ML Product Manager & Consultant</p>
+          <p class="eyebrow">AI/ML Product Management & Consulting</p>
           <p class="lead">
             I turn AI/ML capabilities into real-world products that drive measurable business outcomes.
           </p>
           <p class="sublead">
-            AI Product Leader with 10+ years across Amazon, Deloitte, and Startups — building 0 → 1 and scaled solutions using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
+            AI Product Leader with over 15 years across Amazon, Deloitte, and Startups. Building 0 → 1 and scaled solutions using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
           </p>
         </div>
         <div class="stats">
@@ -38,7 +38,6 @@
 
       <section class="portfolio">
         <h2>Portfolio</h2>
-        <p class="section-intro">AI/ML products, research, and passion projects.</p>
 
         <div class="tabs" role="tablist" aria-label="Portfolio categories">
           {% for category in categories %}
@@ -48,7 +47,7 @@
             role="tab"
             aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
           >
-            {{ category }}
+            {{ "Passion Projects" if category == "Fun Ventures" else category }}
           </button>
           {% endfor %}
         </div>
@@ -65,7 +64,7 @@
             {% for project in grouped_projects[category] %}
             <article class="project-card">
               <div class="card-top">
-                <span class="badge">{{ project.category }}</span>
+                <span class="badge">{{ "Passion Projects" if project.category == "Fun Ventures" else project.category }}</span>
                 <h4>{{ project.title }}</h4>
                 <p class="role">{{ project.role }}</p>
               </div>

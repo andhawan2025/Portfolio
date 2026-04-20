@@ -7,7 +7,6 @@ import { ArtifactModal } from "@/components/artifact-modal"
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
 import type { Project } from "@/lib/projects"
@@ -167,14 +166,12 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       ) : null}
 
       <Dialog open={isTmysFrameOpen} onOpenChange={setIsTmysFrameOpen}>
-        <DialogContent className="max-h-[90vh] w-[min(100vw-2rem,72rem)] max-w-[min(100vw-2rem,72rem)] gap-0 overflow-hidden border-border bg-card p-0">
-          <DialogHeader className="border-b border-border px-4 py-3 text-left">
-            <DialogTitle className="text-base font-semibold">TMYS Agentic Map</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="flex h-[90vh] w-[min(100vw-1rem,176rem)] max-w-[min(100vw-1rem,176rem)] min-w-[64rem] min-h-[32rem] resize overflow-auto gap-0 border-border bg-card p-0">
+          <DialogTitle className="sr-only">TMYS Agentic Map</DialogTitle>
           <iframe
             title="TMYS architecture"
             src="/tmys-architecture.html"
-            className="h-[min(80vh,720px)] w-full border-0 bg-[#0d1117]"
+            className="h-full min-h-0 w-full flex-1 border-0 bg-[#0d1117]"
           />
         </DialogContent>
       </Dialog>
