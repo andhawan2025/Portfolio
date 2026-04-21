@@ -5,6 +5,12 @@ export type ArtifactLink =
   | { kind: "external"; label: string; url: string }
   | { kind: "tmysMap"; label: string }
 
+/** Impact grouped as a heading with nested bullets (optional). */
+export type ImpactSection = {
+  heading: string
+  bullets: string[]
+}
+
 export interface Project {
   id: string
   title: string
@@ -16,6 +22,8 @@ export interface Project {
   impact?: string
   /** Bullet list instead of impact (e.g. TMYS). */
   impactBullets?: string[]
+  /** Grouped impact with sub-bullets; when set, used instead of `impactBullets` / `impact`. */
+  impactSections?: ImpactSection[]
   /** Optional; shown in artifact modal footer. */
   skills?: string[]
   /** Artifact titles / image galleries for the modal. */
@@ -41,7 +49,7 @@ const LOAN_CAMPAIGN_ARTIFACTS = "/portfolio/ResearchProjects/LoanCampaign"
 export const projects: Project[] = [
   {
     id: "pricing-engine",
-    title: "Pricing Engine",
+    title: "Pricing Automation Engine",
     category: "Products",
     goal:
       "Stabilize and scale pricing operations by replacing manual, excel-based workflows with an AI-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
@@ -51,7 +59,7 @@ export const projects: Project[] = [
       "Maintained continuity without additional headcount, avoiding the need for a specialized pricing hire",
       "Improved pricing consistency and margin reliability through standardized, model-driven decisioning",
     ],
-    role: "Product Lead",
+    role: "Product Lead & Builder",
     toolkit: [
       "TF-IDF",
       "Logistic Regression",
@@ -76,7 +84,7 @@ export const projects: Project[] = [
       "Introduced reusable saved reports, allowing users to build personalized, continuously updated dashboards",
       "Scaled analytics support across 45+ customers without proportional increase in engineering effort",
     ],
-    role: "Product Lead / Builder",
+    role: "Product Lead",
     toolkit: [
       "NL2SQL",
       "Retrieval-Augmented Generation (RAG)",
@@ -88,6 +96,50 @@ export const projects: Project[] = [
       "User Feedback loop",
       "Reusable report layer",
       "End-to-end security framework",
+    ],
+    artifacts: [],
+    artifactModalUndisclosed: true,
+  },
+  {
+    id: "conversational-knowledge-platform",
+    title: "Conversational Knowledge Platform",
+    category: "Products",
+    goal:
+      "Design and deploy a conversational AI platform to serve two critical functions: enable B2B customers to get instant answers to operational questions, and accelerate onboarding and training of new associates through guided, context-aware assistance.",
+    impactSections: [
+      {
+        heading: "Customer-facing (B2B support)",
+        bullets: [
+          "Reduced customer support load through self-serve query resolution",
+          "Improved response time and consistency across interactions via always-available support",
+        ],
+      },
+      {
+        heading: "Internal (training & onboarding)",
+        bullets: [
+          "Accelerated onboarding of new associates with real-time, contextual guidance",
+          "Reduced dependency on trainers and documentation-heavy processes",
+        ],
+      },
+      {
+        heading: "Platform-level",
+        bullets: [
+          "Created a unified knowledge layer powering multiple workflows",
+          "Scaled support and training without a proportional increase in headcount",
+        ],
+      },
+    ],
+    role: "Product Lead",
+    toolkit: [
+      "Retrieval-Augmented Generation (RAG)",
+      "Vector Database",
+      "Contextual and Multi-Turn Conversation",
+      "Hallucination prevention",
+      "LLM as Judge",
+      "Defense against prompt injection attacks",
+      "Observability framework (conversation tracking, failure analysis, usage patterns)",
+      "Feedback loops",
+      "Role-based permissions",
     ],
     artifacts: [],
     artifactModalUndisclosed: true,

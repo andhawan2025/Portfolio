@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog"
-import type { Project } from "@/lib/projects"
+import type { Project, ProjectCategory } from "@/lib/projects"
 import { portfolioPath } from "@/lib/site-paths"
 import {
   categoryBadgeClass,
@@ -35,6 +35,82 @@ function projectWithSingleArtifact(project: Project, artifactIndex: number): Pro
   const slice = project.artifacts[artifactIndex]
   if (!slice) return project
   return { ...project, artifacts: [slice] }
+}
+
+function ProjectCardGoalSection({ goal }: { goal: string }) {
+  return (
+    <div>
+      <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <Target className="size-3" />
+        Goal
+      </div>
+      <p className="text-sm leading-relaxed text-secondary-foreground">{goal}</p>
+    </div>
+  )
+}
+
+function ProjectCardImpactSection({ project, cat }: { project: Project; cat: ProjectCategory }) {
+  return (
+    <div className="min-w-0">
+      <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <Zap className="size-3" />
+        Impact
+      </div>
+      {project.impactSections && project.impactSections.length > 0 ? (
+        <ul
+          className={`list-outside list-disc space-y-3 pl-4 text-sm leading-relaxed marker:font-normal ${categoryImpactTextClass[cat]}`}
+        >
+          {project.impactSections.map((section) => (
+            <li key={section.heading} className="pl-1">
+              <span className="font-medium">{section.heading}</span>
+              <ul
+                className={`mt-1.5 list-outside list-[circle] space-y-1 pl-4 font-normal ${categoryImpactTextClass[cat]}`}
+              >
+                {section.bullets.map((line) => (
+                  <li key={`${section.heading}-${line}`} className="pl-0.5">
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      ) : project.impactBullets && project.impactBullets.length > 0 ? (
+        <ul
+          className={`list-inside list-disc space-y-1.5 text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}
+        >
+          {project.impactBullets.map((line) => (
+            <li key={line} className="pl-0.5">
+              {line}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className={`text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}>{project.impact ?? ""}</p>
+      )}
+    </div>
+  )
+}
+
+function ProjectCardToolkitSection({ toolkit }: { toolkit: string[] }) {
+  return (
+    <div className="min-w-0">
+      <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <Wrench className="size-3" />
+        Toolkit
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {toolkit.map((tool) => (
+          <span
+            key={tool}
+            className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
+          >
+            {tool}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
@@ -86,55 +162,12 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </span>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              <Target className="size-3" />
-              Goal
-            </div>
-            <p className="text-sm leading-relaxed text-secondary-foreground">
-              {project.goal}
-            </p>
+        <div className="grid w-full gap-6 md:grid-cols-2">
+          <div className="flex min-w-0 flex-col gap-6">
+            <ProjectCardGoalSection goal={project.goal} />
+            <ProjectCardToolkitSection toolkit={project.toolkit} />
           </div>
-
-          <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              <Zap className="size-3" />
-              Impact
-            </div>
-            {project.impactBullets && project.impactBullets.length > 0 ? (
-              <ul
-                className={`list-inside list-disc space-y-1.5 text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}
-              >
-                {project.impactBullets.map((line) => (
-                  <li key={line} className="pl-0.5">
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className={`text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}>
-                {project.impact ?? ""}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              <Wrench className="size-3" />
-              Toolkit
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {project.toolkit.map((tool) => (
-                <span
-                  key={tool}
-                  className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
+          <ProjectCardImpactSection project={project} cat={cat} />
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
