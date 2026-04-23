@@ -17,8 +17,7 @@ export function HeroSection() {
           AI/ML Product Management & Consulting
         </p>
         <p className="mt-3 leading-[1.7] text-foreground">
-          AI Product Leader with over 15 years across Amazon, Deloitte, and Startups. Building 0 → 1 and scaled
-          solutions using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
+          AI Product Leader with over 15 years across Amazon, Deloitte, and Startups. Building 0 → 1 products using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
         </p>
       </div>
 

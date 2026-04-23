@@ -46,10 +46,16 @@ function artifactEntry(title: string, description = "", images: string[] = []) {
 /** Static assets for Loan Campaign research artifacts (served from `public/portfolio/...`). */
 const LOAN_CAMPAIGN_ARTIFACTS = "/portfolio/ResearchProjects/LoanCampaign"
 
+/** Credit card churn / retention research artifacts (served from `public/portfolio/...`). */
+const CREDIT_CARD_CHURN_ARTIFACTS = "/portfolio/ResearchProjects/CreditCardChurn"
+
+/** Stock sentiment / market analysis research artifacts (served from `public/portfolio/...`). */
+const STOCK_SENTIMENT_ARTIFACTS = "/portfolio/ResearchProjects/StockSentimentAnalysis"
+
 export const projects: Project[] = [
   {
     id: "pricing-engine",
-    title: "Pricing Automation Engine",
+    title: "Pricing Decisioning Engine",
     category: "Products",
     goal:
       "Stabilize and scale pricing operations by replacing manual, excel-based workflows with an AI-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
@@ -146,7 +152,7 @@ export const projects: Project[] = [
   },
   {
     id: "customer-targeting-revenue",
-    title: "AI-Driven Customer Targeting & Revenue Optimization Platform",
+    title: "ML Driven Customer Targeting & Revenue Optimization Platform",
     category: "Academics/Research",
     goal:
       "Design and deploy a predictive AI system to improve customer conversion by identifying high-propensity segments for personal loan campaigns, enabling more efficient and revenue-driven targeting.",
@@ -191,6 +197,118 @@ export const projects: Project[] = [
       { label: "Research Approach", artifactIndex: 1 },
       { label: "Model Performance", artifactIndex: 2 },
       { label: "Data Analysis", artifactIndex: 3 },
+    ],
+  },
+  {
+    id: "customer-retention-churn-intelligence",
+    title: "Customer Retention & Revenue Protection Intelligence",
+    category: "Academics/Research",
+    goal:
+      "Design and optimize a predictive AI system to identify customers at high risk of churn, enabling proactive retention strategies to protect revenue.",
+    impactBullets: [
+      "Built and evaluated 18+ models across multiple sampling strategies to identify the most robust, production-ready solution",
+      "Identified key behavioral drivers of churn (transaction volume, spend patterns, balance trends), enabling targeted retention strategies",
+      "Improved model generalization and reduced overfitting by applying under-sampling techniques to address class imbalance",
+      "Achieved high recall (~98%) and strong accuracy (~85%) on validation data, ensuring maximum identification of at-risk customers",
+      "Established recall as the primary optimization metric to maximize revenue protection by minimizing missed churn cases",
+    ],
+    role: "Researcher / Builder",
+    toolkit: [
+      "Predictive churn modeling",
+      "Gradient Boost",
+      "AdaBoost",
+      "XGBoost",
+      "Over and Under Sampling",
+      "SMOTE",
+      "Hyperparameter tuning (Randomized Search, Cross-validation)",
+      "Overfitting Detection",
+      "Business KPI alignment",
+    ],
+    artifacts: [
+      artifactEntry("Key Results", "Executive summary and key outcomes.", [
+        `${CREDIT_CARD_CHURN_ARTIFACTS}/ExecutiveSummary.png`,
+      ]),
+      artifactEntry("Research Approach", "Business problem overview and solution methodology.", [
+        `${CREDIT_CARD_CHURN_ARTIFACTS}/ModellingApproach.png`,
+      ]),
+      artifactEntry(
+        "Model Performance",
+        "Decision tree models, pruning, and KPI evaluation.",
+        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(
+          (n) => `${CREDIT_CARD_CHURN_ARTIFACTS}/PerformanceAnalysis${n}.png`
+        )
+      ),
+      artifactEntry(
+        "Data Analysis",
+        "Exploratory data analysis and feature views.",
+        Array.from(
+          { length: 12 },
+          (_, i) => `${CREDIT_CARD_CHURN_ARTIFACTS}/DataExploration${i + 1}.png`
+        )
+      ),
+    ],
+    artifactModalGroups: [
+      { label: "Executive Summary", artifactIndex: 0 },
+      { label: "Research Approach", artifactIndex: 1 },
+      { label: "Model Performance", artifactIndex: 2 },
+      { label: "Data Analysis", artifactIndex: 3 },
+    ],
+  },
+  {
+    id: "market-sentiment-investment-analysis",
+    title: "Market Sentiment & Investment Analysis",
+    category: "Academics/Research",
+    goal:
+      "Design an AI-driven system to analyze market sentiment from news data and generate actionable insights to support investment decision-making.",
+    impactBullets: [
+      "Built and evaluated multiple NLP pipelines (Word2Vec, GloVe, Sentence Transformers) to model sentiment and assess correlation with stock performance",
+      "Identified critical limitations in model generalization (overfitting, class bias), preventing premature deployment and avoiding misleading investment signals",
+      "Established F1 score as the primary metric to balance precision and recall for high-stakes financial decisions",
+      "Developed an LLM-powered summarization layer to extract top positive and negative market events on a weekly basis",
+      "Delivered structured, decision-ready insights (top sentiment drivers) instead of raw text, improving usability for business stakeholders",
+    ],
+    role: "Researcher / Builder",
+    toolkit: [
+      "NLP pipelines for sentiment analysis (multi-class classification: positive, negative, neutral)",
+      "Word embeddings (Word2Vec, GloVe, Sentence Transformers)",
+      "Model evaluation and bias detection (overfitting analysis, class imbalance handling)",
+      "Hyperparameter tuning framework (Randomized Search, validation pipelines)",
+      "Advanced prompt engineering (role, task, instruction, structured output design)",
+      "Structured output parsing (JSON extraction, post-processing pipelines)",
+      "Temporal aggregation framework (weekly sentiment analysis)",
+      "Business KPI alignment (F1 optimization, decision accuracy for investment use cases)",
+    ],
+    artifacts: [
+      artifactEntry("Key Results", "Executive summary and key outcomes.", [
+        `${STOCK_SENTIMENT_ARTIFACTS}/ExecutiveSummary.png`,
+      ]),
+      artifactEntry("Research Approach", "Business problem overview and solution methodology.", [
+        `${STOCK_SENTIMENT_ARTIFACTS}/AnalysisApproach.png`,
+      ]),
+      artifactEntry(
+        "Word Embeddings",
+        "Embedding models and representation learning for news text.",
+        [1, 2, 3].map((n) => `${STOCK_SENTIMENT_ARTIFACTS}/WordEmbeddings${n}.png`)
+      ),
+      artifactEntry(
+        "Sentiment Analysis",
+        "Classification pipelines, evaluation, and correlation with market signals.",
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+          (n) => `${STOCK_SENTIMENT_ARTIFACTS}/SentimentAnalysis${n}.png`
+        )
+      ),
+      artifactEntry(
+        "Prompt Engineering",
+        "LLM prompting design and structured outputs for summarization.",
+        [1, 2, 3, 4, 5, 6].map((n) => `${STOCK_SENTIMENT_ARTIFACTS}/PromptEngineering${n}.png`)
+      ),
+    ],
+    artifactModalGroups: [
+      { label: "Executive Summary", artifactIndex: 0 },
+      { label: "Research Approach", artifactIndex: 1 },
+      { label: "Word Embeddings", artifactIndex: 2 },
+      { label: "Sentiment Analysis", artifactIndex: 3 },
+      { label: "Prompt Engineering", artifactIndex: 4 },
     ],
   },
   {
