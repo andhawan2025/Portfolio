@@ -5,6 +5,14 @@ export type ArtifactLink =
   | { kind: "external"; label: string; url: string }
   | { kind: "tmysMap"; label: string }
 
+/** Two columns (Dolma / Kit Cat) for `layout: "inspirational-cartoons"`. */
+export type InspirationalCartoonsColumn = {
+  image: string
+  description: string
+  quotes: string[]
+  youtubeUrl: string
+}
+
 /** Impact grouped as a heading with nested bullets (optional). */
 export type ImpactSection = {
   heading: string
@@ -37,6 +45,10 @@ export interface Project {
    * Use with a full `artifacts` list; “View Artifacts” still opens all slides.
    */
   artifactModalGroups?: { label: string; artifactIndex: number }[]
+  /** Custom two-column card with rotating quotes (Passion Projects). */
+  layout?: "inspirational-cartoons"
+  /** Required when `layout` is `inspirational-cartoons` (typically two entries). */
+  inspirationalCartoonsColumns?: InspirationalCartoonsColumn[]
 }
 
 function artifactEntry(title: string, description = "", images: string[] = []) {
@@ -51,6 +63,8 @@ const CREDIT_CARD_CHURN_ARTIFACTS = "/portfolio/ResearchProjects/CreditCardChurn
 
 /** Stock sentiment / market analysis research artifacts (served from `public/portfolio/...`). */
 const STOCK_SENTIMENT_ARTIFACTS = "/portfolio/ResearchProjects/StockSentimentAnalysis"
+
+const INSPIRATIONAL_CARTOONS_PORTFOLIO = "/portfolio"
 
 export const projects: Project[] = [
   {
@@ -338,6 +352,57 @@ export const projects: Project[] = [
     artifactLinks: [
       { kind: "external", label: "Demo Video", url: "https://www.youtube.com/watch?v=YveTm6DmPWM" },
       { kind: "tmysMap", label: "TMYS Agentic Map" },
+    ],
+  },
+  {
+    id: "inspirational-cartoons",
+    title: "'Inspirational' Cartoons",
+    category: "Passion Projects",
+    role: "Joker",
+    goal: "Duh!",
+    impact: "I like it!",
+    toolkit: [],
+    artifacts: [],
+    layout: "inspirational-cartoons",
+    inspirationalCartoonsColumns: [
+      {
+        image: `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/DolmaDoggieStage.png`,
+        description:
+          "A dog who's sole purpose is to tell us cheesy dad jokes. Beware!",
+        youtubeUrl: "https://www.youtube.com/@DolmaDoggieJokes/shorts",
+        quotes: [
+          "Why did the math book look so stressed? Because it had too many problems.",
+          "Why do Cows wear bells? Because their horns don't work.",
+          "Did you hear about the guy who invented lifesavers? He made a mint!",
+          "Why don't scientists trust atoms? Because they make up everything.",
+          "The Black Eyed Peas can sing us a tune. But chickpeas can only Hummus one!",
+          "I told my wife I was building a model of the Everest mountain range. She asked: Is it to scale? I replied: No, it is just to look at.",
+          "I am on a seafood diet. Whenever I see food, I eat it.",
+          "I ordered a chicken and an egg online. I will let you know!",
+          "Which cats go to bowling? Alley Cats.",
+          "Which phones do turtles use? Shell-phones.",
+          "I started a band called '999 Megabytes'. We haven't gotten a gig yet.",
+        ],
+      },
+      {
+        image: `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/KitCatStage.png`,
+        description:
+          "A transcendental cat who will lead all of us to salvation. All bow to thee!",
+        youtubeUrl: "https://www.youtube.com/@KitCatSpiritual/shorts",
+        quotes: [
+          "You don't have a soul. You are the soul. You have a body",
+          "A gem can't be polished without friction, nor man perfected without trial",
+          "Sometimes, just a change of perspective is all it takes to solve a problem",
+          "The only way to get the best of an argument is to avoid it",
+          "We are here in this world not to change our destiny, but to fulfil it",
+          "Some succeed because they are destined to, but most succeed because they are determined to",
+          "Don't depend too much on anyone in the world because even your shadow leaves you when you are in darkness",
+          "If God causes you to suffer much, He certainly intends to make you a saint",
+          "Tact is the art of making a point without making an enemy",
+          "For those who believe, no proof is necessary; For those who disbelieve, no proof is sufficient",
+          "Rest for mind is as necessary as for the body, because the body will rest only when the mind is in rest",
+        ],
+      },
     ],
   },
 ]

@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import type { Project, ProjectCategory } from "@/lib/projects"
+import { InspirationalCartoonsProjectCard } from "@/components/inspirational-cartoons-project-card"
 import { portfolioPath } from "@/lib/site-paths"
 import {
   categoryBadgeClass,
@@ -132,6 +133,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const closeArtifactModal = () => {
     setIsArtifactModalOpen(false)
     setArtifactModalProject(null)
+  }
+
+  if (
+    project.layout === "inspirational-cartoons" &&
+    project.inspirationalCartoonsColumns?.length === 2
+  ) {
+    return <InspirationalCartoonsProjectCard project={project} index={index} />
   }
 
   return (
