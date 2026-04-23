@@ -7,6 +7,8 @@ export type ArtifactLink =
 
 /** Two columns (Dolma / Kit Cat) for `layout: "inspirational-cartoons"`. */
 export type InspirationalCartoonsColumn = {
+  /** Display name above the character image (e.g. Dolma Doggie, Kit Cat). */
+  characterName: string
   image: string
   description: string
   quotes: string[]
@@ -361,11 +363,12 @@ export const projects: Project[] = [
     role: "Joker",
     goal: "Duh!",
     impact: "I like it!",
-    toolkit: [],
+    toolkit: ["Tell Me Your Story"],
     artifacts: [],
     layout: "inspirational-cartoons",
     inspirationalCartoonsColumns: [
       {
+        characterName: "Dolma Doggie",
         image: `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/DolmaDoggieStage.png`,
         description:
           "A dog who's sole purpose is to tell us cheesy dad jokes. Beware!",
@@ -385,6 +388,7 @@ export const projects: Project[] = [
         ],
       },
       {
+        characterName: "Kit Cat",
         image: `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/KitCatStage.png`,
         description:
           "A transcendental cat who will lead all of us to salvation. All bow to thee!",

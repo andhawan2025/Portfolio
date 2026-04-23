@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { User, Target, Zap } from "lucide-react"
+import { User, Target, Zap, Wrench } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import type { InspirationalCartoonsColumn, Project } from "@/lib/projects"
 import { portfolioPath } from "@/lib/site-paths"
@@ -48,11 +48,16 @@ function InspirationalColumn({
 
   return (
     <div className="flex min-w-0 flex-col items-center gap-4">
+      <h4
+        className={`w-full text-center text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
+      >
+        {column.characterName}
+      </h4>
       <div className="flex w-full justify-center">
         <div className="relative aspect-[9/16] w-full max-w-48 overflow-hidden rounded-lg bg-muted/30">
           <img
             src={column.image}
-            alt=""
+            alt={column.characterName}
             className="h-full w-full object-contain object-center"
           />
         </div>
@@ -128,6 +133,18 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
               <span className="font-medium text-foreground">Impact:</span>
               <span>{project.impact ?? ""}</span>
             </span>
+            {project.toolkit.length > 0 ? (
+              <>
+                <span className="text-border" aria-hidden>
+                  |
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <Wrench className="size-3 shrink-0 text-muted-foreground" aria-hidden />
+                  <span className="font-medium text-foreground">Toolkit:</span>
+                  <span>{project.toolkit.join(", ")}</span>
+                </span>
+              </>
+            ) : null}
           </div>
         </div>
         <span className="font-mono text-sm text-muted-foreground">
