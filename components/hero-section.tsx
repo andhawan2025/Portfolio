@@ -13,10 +13,10 @@ export function HeroSection() {
             Anubhav Dhawan
           </h1>
         </div>
-        <p className="my-2 ml-[88px] text-[0.8rem] font-normal uppercase leading-normal tracking-[0.08em] text-primary lg:ml-[104px]">
-          AI/ML Product Management & Consulting
+        <p className="my-2 ml-[88px] text-[1rem] font-normal uppercase leading-normal tracking-[0.08em] text-primary lg:ml-[104px]">
+          AI/ML Product Leader & Consultant
         </p>
-        <p className="mt-3 leading-[1.7] text-foreground">
+        <p className="mt-3 ml-[88px] leading-[1.7] text-foreground lg:ml-[104px]">
           AI Product Leader with over 15 years across Amazon, Deloitte, and Startups. Building 0 → 1 products using LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
         </p>
       </div>

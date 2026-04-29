@@ -15,13 +15,13 @@ const categoryConfig: Record<ProjectCategory, { icon: React.ReactNode; activeCla
     icon: <GraduationCap className="size-4" />,
     activeClass: "border-emerald-500 text-emerald-500",
   },
-  "Passion Projects": { 
+  "Imagination Labs": { 
     icon: <Sparkles className="size-4" />, 
     activeClass: "border-amber-500 text-amber-500" 
   },
 }
 
-const categories: ProjectCategory[] = ["Products", "Academics/Research", "Passion Projects"]
+const categories: ProjectCategory[] = ["Products", "Academics/Research", "Imagination Labs"]
 
 export function ProjectsGrid() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("Products")

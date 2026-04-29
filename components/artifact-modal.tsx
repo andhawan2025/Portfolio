@@ -152,21 +152,23 @@ export function ArtifactModal({ project, isOpen, onClose, variant = "default" }:
               </div>
             </div>
 
-            <div className="flex justify-center gap-2 bg-background/80 py-4">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => goToSlide(index)}
-                  className={`size-3 rounded-full transition-all ${
-                    index === currentSlide
-                      ? `${categoryModalDotActiveClass[cat]} scale-110`
-                      : "bg-border hover:bg-muted-foreground"
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
+            {showNav ? (
+              <div className="flex justify-center gap-2 bg-background/80 py-4">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => goToSlide(index)}
+                    className={`size-3 rounded-full transition-all ${
+                      index === currentSlide
+                        ? `${categoryModalDotActiveClass[cat]} scale-110`
+                        : "bg-border hover:bg-muted-foreground"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            ) : null}
           </div>
         </DialogContent>
       </Dialog>

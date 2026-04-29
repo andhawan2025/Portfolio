@@ -53,33 +53,35 @@ function InspirationalColumn({
       >
         {column.characterName}
       </h4>
-      <div className="flex w-full justify-center">
-        <div className="relative aspect-[9/16] w-full max-w-48 overflow-hidden rounded-lg bg-muted/30">
+      <div className="flex w-full items-start justify-center gap-4">
+        <div className="relative aspect-[9/16] w-full max-w-48 shrink-0 overflow-hidden rounded-lg bg-muted/30">
           <img
             src={column.image}
             alt={column.characterName}
             className="h-full w-full object-contain object-center"
           />
         </div>
+        <div className="mt-12 flex w-full max-w-48 flex-col items-start justify-center">
+          <p className={`w-full text-left text-sm font-medium leading-relaxed ${impactTone}`}>
+            {column.description}
+          </p>
+          <a
+            href={column.youtubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex w-full items-center gap-1.5 text-sm font-medium text-blue-600 underline underline-offset-4 hover:text-blue-700"
+          >
+            <img src={YOUTUBE_LOGO_SRC} alt="" className="h-4 w-auto shrink-0" width={16} height={12} />
+            <span>Subscribe</span>
+          </a>
+          <blockquote
+            className="mt-4 min-h-[5rem] w-full py-2 text-left text-sm italic leading-relaxed text-foreground transition-opacity duration-300"
+            key={quoteIndex}
+          >
+            {quote}
+          </blockquote>
+        </div>
       </div>
-      <p className={`w-full text-center text-sm font-medium leading-relaxed ${impactTone}`}>
-        {column.description}
-      </p>
-      <blockquote
-        className="min-h-[5rem] w-full px-3 py-3 text-center text-sm italic leading-relaxed text-foreground transition-opacity duration-300"
-        key={quoteIndex}
-      >
-        {quote}
-      </blockquote>
-      <a
-        href={column.youtubeUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline ${categoryLinkClass[cat]}`}
-      >
-        <img src={YOUTUBE_LOGO_SRC} alt="" className="h-6 w-auto shrink-0" width={24} height={18} />
-        <span>Please subscribe, like and share!</span>
-      </a>
     </div>
   )
 }
@@ -99,57 +101,61 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
       className={`group relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 ${categoryBorderHoverClass[cat]} hover:bg-card/80`}
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
-        <div className="flex min-w-0 flex-1 flex-col gap-3">
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
+        <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-3">
             <Badge className={`shrink-0 font-mono text-xs border-0 ${categoryBadgeClass[cat]}`}>
               {project.category}
             </Badge>
             <h3
-              className={`min-w-0 text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
+              className={`text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
             >
               {project.title}
             </h3>
           </div>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-2">
-              <User className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
-              <span className="font-medium text-foreground">Role:</span>
-              <span>{project.role}</span>
-            </span>
-            <span className="text-border" aria-hidden>
-              |
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Target className="size-3 shrink-0 text-muted-foreground" aria-hidden />
-              <span className="font-medium text-foreground">Goal:</span>
-              <span>{project.goal}</span>
-            </span>
-            <span className="text-border" aria-hidden>
-              |
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Zap className="size-3 shrink-0 text-muted-foreground" aria-hidden />
-              <span className="font-medium text-foreground">Impact:</span>
-              <span>{project.impact ?? ""}</span>
-            </span>
-            {project.toolkit.length > 0 ? (
-              <>
-                <span className="text-border" aria-hidden>
-                  |
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <Wrench className="size-3 shrink-0 text-muted-foreground" aria-hidden />
-                  <span className="font-medium text-foreground">Toolkit:</span>
-                  <span>{project.toolkit.join(", ")}</span>
-                </span>
-              </>
-            ) : null}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <User className="size-3.5" />
+            {project.role}
           </div>
         </div>
         <span className="font-mono text-sm text-muted-foreground">
           {String(index + 1).padStart(2, "0")}
         </span>
+      </div>
+
+      <div className="mb-8 grid w-full gap-6 md:grid-cols-3">
+        <div>
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <Target className="size-3" />
+            Goal
+          </div>
+          <p className="text-sm leading-relaxed text-secondary-foreground">{project.goal}</p>
+        </div>
+        <div className="min-w-0">
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <Zap className="size-3" />
+            Impact
+          </div>
+          <p className={`text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}>{project.impact ?? ""}</p>
+        </div>
+        <div className="min-w-0">
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <Wrench className="size-3" />
+            Toolkit
+          </div>
+          {project.toolkit.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5">
+              {project.toolkit.map((tool) => (
+                <span
+                  key={tool}
+                  className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
 
       <div className="grid gap-10 md:grid-cols-2 md:gap-8">

@@ -16,7 +16,7 @@ export function ContactSection() {
       <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">Contact</h2>
       <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-foreground">
         <p className="m-0 min-w-0 text-muted-foreground text-sm leading-relaxed sm:text-base">
-          Interested in working together or discussing AI/ML projects.
+          Interested in working together or discussing any AI/ML projects? Let's talk!
         </p>
         <a
           href="mailto:andhawan@tmys.ai"

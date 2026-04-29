@@ -1,5 +1,5 @@
 /** Portfolio project data and category copy. */
-export type ProjectCategory = "Products" | "Academics/Research" | "Passion Projects"
+export type ProjectCategory = "Products" | "Academics/Research" | "Imagination Labs"
 
 export type ArtifactLink =
   | { kind: "external"; label: string; url: string }
@@ -36,9 +36,11 @@ export interface Project {
   impactSections?: ImpactSection[]
   /** Optional; shown in artifact modal footer. */
   skills?: string[]
+  /** Optional extra row shown on standard project cards (e.g. featured characters). */
+  additionalRow?: string[]
   /** Artifact titles / image galleries for the modal. */
   artifacts: { title: string; description: string; images: string[] }[]
-  /** Extra links for Passion Projects (TMYS demo + architecture). */
+  /** Extra links for Imagination Labs (TMYS demo + architecture). */
   artifactLinks?: ArtifactLink[]
   /** When true, artifact modal is not offered; show undisclosed copy instead of a working control. */
   artifactModalUndisclosed?: boolean
@@ -47,7 +49,7 @@ export interface Project {
    * Use with a full `artifacts` list; “View Artifacts” still opens all slides.
    */
   artifactModalGroups?: { label: string; artifactIndex: number }[]
-  /** Custom two-column card with rotating quotes (Passion Projects). */
+  /** Custom two-column card with rotating quotes (Imagination Labs). */
   layout?: "inspirational-cartoons"
   /** Required when `layout` is `inspirational-cartoons` (typically two entries). */
   inspirationalCartoonsColumns?: InspirationalCartoonsColumn[]
@@ -65,7 +67,7 @@ const CREDIT_CARD_CHURN_ARTIFACTS = "/portfolio/ResearchProjects/CreditCardChurn
 
 /** Stock sentiment / market analysis research artifacts (served from `public/portfolio/...`). */
 const STOCK_SENTIMENT_ARTIFACTS = "/portfolio/ResearchProjects/StockSentimentAnalysis"
-
+const HUMAN_AI_COLLAB_TRANSFORMATION_ARTIFACTS = "/portfolio/Products"
 const INSPIRATIONAL_CARTOONS_PORTFOLIO = "/portfolio"
 
 export const projects: Project[] = [
@@ -74,10 +76,10 @@ export const projects: Project[] = [
     title: "Pricing Decisioning Engine",
     category: "Products",
     goal:
-      "Stabilize and scale pricing operations by replacing manual, excel-based workflows with an AI-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
+      "Stabilize and scale pricing operations by augmenting current pricing processes with an AI-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
     impactBullets: [
       "Restored pricing velocity and eliminated quote backlogs following disruption in pricing operations",
-      "Reduced reliance on manual, Excel-based workflows, improving efficiency and analyst productivity (~90% effort reduction)",
+      "Reduced reliance on manual workflows, improving efficiency and analyst productivity (~90% effort reduction)",
       "Maintained continuity without additional headcount, avoiding the need for a specialized pricing hire",
       "Improved pricing consistency and margin reliability through standardized, model-driven decisioning",
     ],
@@ -100,8 +102,8 @@ export const projects: Project[] = [
     goal:
       "Design and deploy an AI-powered NL2SQL solution to handle high volumes of custom reporting requests across 45+ B2B customers, enabling fully user-driven report generation with minimal to no human intervention.",
     impactBullets: [
-      "Reduced software engineering workload by ~20% by automating custom report generation through natural language queries",
-      "Shortened turnaround time for reporting requests from 2–4 weeks to ~5 minutes",
+      "Reduced software engineering workload by ~60% by automating custom report generation through natural language queries",
+      "Shortened turnaround time for reporting requests from 2–4 weeks to ~15 minutes",
       "Enabled end users to define report requirements directly, eliminating most back-and-forth and manual SQL translation",
       "Introduced reusable saved reports, allowing users to build personalized, continuously updated dashboards",
       "Scaled analytics support across 45+ customers without proportional increase in engineering effort",
@@ -165,6 +167,53 @@ export const projects: Project[] = [
     ],
     artifacts: [],
     artifactModalUndisclosed: true,
+  },
+  {
+    id: "human-ai-collaboration-transformation",
+    title: "Human-AI Collaboration Transformation",
+    category: "Products",
+    goal:
+      "Lead an organization-wide transformation to adopt AI-native ways of working by repositioning AI from a perceived threat to an enabler, focusing on augmenting human capability, accelerating delivery, and empowering teams to build faster and smarter without reducing workforce value.",
+    role: "Transformation Lead",
+    toolkit: [
+      "Operating Model Redesign",
+      "Change Management",
+      "Stakeholder Alignment",
+      "Narrative and Perception (AI as augmentation vs. replacement)",
+      "Executive and team-level enablement workshops",
+      "AI-assisted development environments (Cursor, GitHub Copilot)",
+      "Structured prompt engineering playbooks",
+    ],
+    impactSections: [
+      {
+        heading: "Organizational Adoption & Culture Shift",
+        bullets: [
+          "Successfully convinced a traditionally skeptical organization to adopt AI, even when initial sentiment viewed it as a threat to jobs",
+          "Reframed AI as a tool for acceleration, not replacement, leading to general acceptance and engagement",
+        ],
+      },
+      {
+        heading: "Delivery Acceleration",
+        bullets: [
+          "Significantly improved speed of execution by embedding AI into day-to-day workflows",
+          "Reduced dependency on linear development cycles by enabling rapid prototyping and iteration",
+        ],
+      },
+      {
+        heading: "Sustainable Operating Model",
+        bullets: [
+          "Established a repeatable, organization-wide framework for adopting AI responsibly and effectively",
+          "Built long-term trust in AI systems through guardrails, transparency, and continuous feedback mechanisms",
+        ],
+      },
+    ],
+    artifacts: [
+      artifactEntry(
+        "AI Reshapes the Digital Product Team Structure",
+        "Traditional delivery pod vs. AI-native outcome pod transformation view.",
+        [`${HUMAN_AI_COLLAB_TRANSFORMATION_ARTIFACTS}/HumanAICollaborationTransformation.png`]
+      ),
+    ],
   },
   {
     id: "customer-targeting-revenue",
@@ -330,10 +379,10 @@ export const projects: Project[] = [
   {
     id: "tmys",
     title: "Tell Me Your Story (TMYS)",
-    category: "Passion Projects",
+    category: "Imagination Labs",
     role: "Experimenter / AI Product Builder",
     goal:
-      "Build an AI-native content platform that transforms user prompts into fully generated video stories with character consistency — automating the end-to-end pipeline from screenplay creation to final video production and distribution.",
+      "Build an AI-native content platform that transforms user prompts into fully generated video stories with character, voice and scene continuity — automating the end-to-end pipeline from screenplay creation to final video production and distribution. Build the right harness to overcome the limitations of the current diffusion models.",
     impactBullets: [
       "Designed and prototyped a multi-agent AI pipeline for automated storytelling",
       "Validated feasibility of generating consistent characters, scenes, and narrative flow using GenAI",
@@ -341,12 +390,16 @@ export const projects: Project[] = [
       "Established foundation for a scalable AI content platform (YouTube-first distribution, SaaS potential)",
     ],
     toolkit: [
+      "Intelligent Situation and Screenplay Generation",
+      "Character Management & Persistance",
+      "Dialogue, Video & Background Music Syncing",
       "Text-To-Image",
       "Image-To-Video",
       "Agentic Architecture",
       "GPT-4o",
       "Google Veo-3",
       "Nano Banana",
+      "Elevenlabs Audio Generation",
       "Agentic Evaluation",
       "YouTube Publishing",
     ],
@@ -358,11 +411,11 @@ export const projects: Project[] = [
   },
   {
     id: "inspirational-cartoons",
-    title: "'Inspirational' Cartoons",
-    category: "Passion Projects",
-    role: "Joker",
-    goal: "Duh!",
-    impact: "I like it!",
+    title: "WhimsyWorks Toon Studios",
+    category: "Imagination Labs",
+    role: "Chief Joy Arrchitect",
+    goal: "Create delightful, emotionally engaging content experiences powered by Tell Me Your Story",
+    impact: "Built a repeatable system that engaged audience on a regular basis",
     toolkit: ["Tell Me Your Story"],
     artifacts: [],
     layout: "inspirational-cartoons",
@@ -414,5 +467,5 @@ export const projects: Project[] = [
 export const categoryDescriptions: Record<ProjectCategory, string> = {
   Products: "Commercial AI/ML products led from concept to launch.",
   "Academics/Research": "Academic collaborations and research initiatives.",
-  "Passion Projects": "Self learning and AI experimentation initiatives.",
+  "Imagination Labs": "Self learning and AI experimentation initiatives.",
 }

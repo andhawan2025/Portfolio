@@ -114,6 +114,26 @@ function ProjectCardToolkitSection({ toolkit }: { toolkit: string[] }) {
   )
 }
 
+function ProjectCardAdditionalRow({ items }: { items: string[] }) {
+  return (
+    <div className="mt-4">
+      <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        Characters
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {items.map((item) => (
+          <span
+            key={item}
+            className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function ProjectCard({ project, index }: ProjectCardProps) {
   const [isArtifactModalOpen, setIsArtifactModalOpen] = useState(false)
   /** When set, modal shows only this artifact’s slides; when null, full `project` artifacts. */
@@ -124,6 +144,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const artifactGroups = project.artifactModalGroups ?? []
   const cat = project.category
   const linkClass = `inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline transition-colors ${categoryLinkClass[cat]}`
+  const useMinimalArtifactModal =
+    artifactModalProject !== null || project.id === "human-ai-collaboration-transformation"
 
   const openArtifactModalGroup = (artifactIndex: number) => {
     setArtifactModalProject(projectWithSingleArtifact(project, artifactIndex))
@@ -177,6 +199,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </div>
           <ProjectCardImpactSection project={project} cat={cat} />
         </div>
+
+        {project.additionalRow && project.additionalRow.length > 0 ? (
+          <ProjectCardAdditionalRow items={project.additionalRow} />
+        ) : null}
 
         <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
           {undisclosedArtifacts ? (
@@ -255,7 +281,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           project={artifactModalProject ?? project}
           isOpen={isArtifactModalOpen}
           onClose={closeArtifactModal}
-          variant={artifactModalProject ? "minimal" : "default"}
+          variant={useMinimalArtifactModal ? "minimal" : "default"}
         />
       ) : null}
 

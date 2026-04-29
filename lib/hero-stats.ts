@@ -1,7 +1,2 @@
 /** Hero stat cards shown on the portfolio page. */
-export const heroStats: { value: string; label: string }[] = [
-  { value: "10+", label: "AI/ML Products Shipped" },
-  { value: "20+", label: "ML Models Built and Evaluated" },
-  { value: "50+", label: "AI Use Cases Delivered" },
-  { value: "50%+", label: "Efficiency Gains" },
-]
+export const heroStats: { value: string; label: string }[] = []
