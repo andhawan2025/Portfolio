@@ -73,10 +73,10 @@ const INSPIRATIONAL_CARTOONS_PORTFOLIO = "/portfolio"
 export const projects: Project[] = [
   {
     id: "pricing-engine",
-    title: "Pricing Decisioning Engine",
+    title: "Predictive Pricing Engine",
     category: "Products",
     goal:
-      "Stabilize and scale pricing operations by augmenting current pricing processes with an AI-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
+      "Stabilize and scale pricing operations by augmenting current pricing processes with an ML-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
     impactBullets: [
       "Restored pricing velocity and eliminated quote backlogs following disruption in pricing operations",
       "Reduced reliance on manual workflows, improving efficiency and analyst productivity (~90% effort reduction)",
@@ -148,7 +148,7 @@ export const projects: Project[] = [
       {
         heading: "Platform-level",
         bullets: [
-          "Created a unified knowledge layer powering multiple workflows",
+          "Created a unified knowledge layer powering multiple workflows, saving business $0.5M annually",
           "Scaled support and training without a proportional increase in headcount",
         ],
       },
@@ -195,8 +195,8 @@ export const projects: Project[] = [
       {
         heading: "Delivery Acceleration",
         bullets: [
-          "Significantly improved speed of execution by embedding AI into day-to-day workflows",
-          "Reduced dependency on linear development cycles by enabling rapid prototyping and iteration",
+          "Improved the speed of execution by 50% by embedding AI into day-to-day workflows",
+          "Reduced dependency on linear development cycles by enabling rapid prototyping and iteration, fully driven by business teams",
         ],
       },
       {
@@ -382,7 +382,7 @@ export const projects: Project[] = [
     category: "Imagination Labs",
     role: "Experimenter / AI Product Builder",
     goal:
-      "Build an AI-native content platform that transforms user prompts into fully generated video stories with character, voice and scene continuity — automating the end-to-end pipeline from screenplay creation to final video production and distribution. Build the right harness to overcome the limitations of the current diffusion models.",
+      "Build an AI-native content platform that transforms user prompts into fully generated long form videos with character, voice and scene continuity — automating the end-to-end pipeline from screenplay creation to final video production and distribution. Build the right harness to overcome the limitations of the current diffusion models.",
     impactBullets: [
       "Designed and prototyped a multi-agent AI pipeline for automated storytelling",
       "Validated feasibility of generating consistent characters, scenes, and narrative flow using GenAI",
