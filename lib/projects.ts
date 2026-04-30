@@ -120,6 +120,7 @@ export const projects: Project[] = [
       "Drastically reduced the time for custom requests, from weeks to minutes, and removed more than half of the engineering effort needed for these reports.",
     role: "Product Lead",
     toolkit: [
+      "Agentic AI",
       "NL2SQL",
       "RAG",
       "Advanced Prompt Engineering",
@@ -167,6 +168,7 @@ export const projects: Project[] = [
       "Saved around half a million yearly in customer support and training costs.",
     role: "Product Lead",
     toolkit: [
+      "Agentic AI",
       "RAG",
       "Vector Database",
       "Contextual Conversation",
