@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { User, Target, Zap, Wrench } from "lucide-react"
+import { User, Target, TrendingUp, Wrench } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import type { InspirationalCartoonsColumn, Project } from "@/lib/projects"
 import { portfolioPath } from "@/lib/site-paths"
@@ -62,7 +62,9 @@ function InspirationalColumn({
           />
         </div>
         <div className="mt-12 flex w-full max-w-48 flex-col items-start justify-center">
-          <p className={`w-full text-left text-sm font-medium leading-relaxed ${impactTone}`}>
+          <p
+            className={`w-full h-[8rem] rounded-xl border border-amber-500/30 bg-amber-500/20 px-4 py-3 text-left text-[0.945rem] font-normal leading-relaxed shadow-[0_10px_30px_rgba(245,158,11,0.22)] ${impactTone}`}
+          >
             {column.description}
           </p>
           <a
@@ -89,6 +91,24 @@ function InspirationalColumn({
 interface InspirationalCartoonsProjectCardProps {
   project: Project
   index: number
+}
+
+const categoryAccentTextClass: Record<Project["category"], string> = {
+  Products: "text-primary",
+  "Academics/Research": "text-emerald-500",
+  "Imagination Labs": "text-amber-500",
+}
+
+const categoryAccentBorderClass: Record<Project["category"], string> = {
+  Products: "border-primary/50",
+  "Academics/Research": "border-emerald-500/50",
+  "Imagination Labs": "border-amber-500/50",
+}
+
+const categoryAccentTrackClass: Record<Project["category"], string> = {
+  Products: "bg-primary/50",
+  "Academics/Research": "bg-emerald-500/50",
+  "Imagination Labs": "bg-amber-500/50",
 }
 
 export function InspirationalCartoonsProjectCard({ project, index }: InspirationalCartoonsProjectCardProps) {
@@ -124,27 +144,34 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
       </div>
 
       <div className="mb-8 grid w-full gap-6 md:grid-cols-3">
-        <div>
-          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            <Target className="size-3" />
-            Goal
+        <div className="relative min-w-0">
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
+            <span
+              className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full border bg-card text-[11px] font-semibold ${categoryAccentTextClass[cat]} ${categoryAccentBorderClass[cat]}`}
+            >
+              1
+            </span>
+            <Target className={`size-3 ${categoryAccentTextClass[cat]}`} />
+            <span className={categoryAccentTextClass[cat]}>Goal</span>
           </div>
-          <p className="text-sm leading-relaxed text-secondary-foreground">{project.goal}</p>
+          <p className="ml-8 text-sm leading-relaxed text-secondary-foreground">{project.goal}</p>
+          <span
+            className={`pointer-events-none absolute left-[6.9rem] right-[-0.75rem] top-3 hidden h-px md:block ${categoryAccentTrackClass[cat]}`}
+            aria-hidden
+          />
         </div>
-        <div className="min-w-0">
-          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            <Zap className="size-3" />
-            Impact
-          </div>
-          <p className={`text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}>{project.impact ?? ""}</p>
-        </div>
-        <div className="min-w-0">
-          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            <Wrench className="size-3" />
-            Toolkit
+        <div className="relative min-w-0">
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
+            <span
+              className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full border bg-card text-[11px] font-semibold ${categoryAccentTextClass[cat]} ${categoryAccentBorderClass[cat]}`}
+            >
+              2
+            </span>
+            <Wrench className={`size-3 ${categoryAccentTextClass[cat]}`} />
+            <span className={categoryAccentTextClass[cat]}>Toolkit</span>
           </div>
           {project.toolkit.length > 0 ? (
-            <div className="flex flex-wrap gap-1.5">
+            <div className="ml-8 flex flex-wrap gap-1.5">
               {project.toolkit.map((tool) => (
                 <span
                   key={tool}
@@ -155,6 +182,22 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
               ))}
             </div>
           ) : null}
+          <span
+            className={`pointer-events-none absolute left-[8rem] right-[-0.75rem] top-3 hidden h-px md:block ${categoryAccentTrackClass[cat]}`}
+            aria-hidden
+          />
+        </div>
+        <div className="min-w-0">
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
+            <span
+              className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full border bg-card text-[11px] font-semibold ${categoryAccentTextClass[cat]} ${categoryAccentBorderClass[cat]}`}
+            >
+              3
+            </span>
+            <TrendingUp className={`size-3 ${categoryAccentTextClass[cat]}`} />
+            <span className={categoryAccentTextClass[cat]}>Bottom Line</span>
+          </div>
+          <p className="ml-8 text-sm leading-relaxed text-secondary-foreground">{project.impact ?? ""}</p>
         </div>
       </div>
 

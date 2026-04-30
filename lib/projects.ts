@@ -28,6 +28,10 @@ export interface Project {
   goal: string
   role: string
   toolkit: string[]
+  /** Optional summary after toolkit (e.g. business outcome one-liner). */
+  bottomLine?: string
+  /** Overrides the default "Impact" heading for the impact / bullets block. */
+  impactSectionLabel?: string
   /** Single impact paragraph (most projects). */
   impact?: string
   /** Bullet list instead of impact (e.g. TMYS). */
@@ -77,12 +81,15 @@ export const projects: Project[] = [
     category: "Products",
     goal:
       "Stabilize and scale pricing operations by augmenting current pricing processes with an ML-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
+    impactSectionLabel: "Accomplishments",
     impactBullets: [
       "Reduced reliance on manual workflows, improving efficiency and analyst productivity (~90% effort reduction)",
       "Restored pricing velocity and eliminated quote backlogs following disruption in pricing operations",
-      "Maintained continuity without additional headcount, avoiding the need for a specialized pricing hire",
+      "Maintained continuity without additional headcount, empowering business analysts to run pricing workflows, avoiding the need for a specialized pricing hire",
       "Improved pricing consistency and margin reliability through standardized, model-driven decisioning",
     ],
+    bottomLine:
+      "90% reduction in manual effort for pricing and eliminated the need to setup a new pricing team in a cash strapped start up.",
     role: "Product Lead & Builder",
     toolkit: [
       "TF-IDF",
@@ -101,6 +108,7 @@ export const projects: Project[] = [
     category: "Products",
     goal:
       "Design and deploy an AI-powered NL2SQL solution to handle high volumes of custom reporting requests across 45+ B2B customers, enabling fully user-driven report generation with minimal to no human intervention.",
+    impactSectionLabel: "Accomplishments",
     impactBullets: [
       "Reduced software engineering workload by ~60% by automating custom report generation through natural language queries",
       "Shortened turnaround time for reporting requests from 2–4 weeks to ~15 minutes",
@@ -108,15 +116,16 @@ export const projects: Project[] = [
       "Introduced reusable saved reports, allowing users to build personalized, continuously updated dashboards",
       "Scaled analytics support across 45+ customers without proportional increase in engineering effort",
     ],
+    bottomLine:
+      "Drastically reduced the time for custom requests, from weeks to minutes, and removed more than half of the engineering effort needed for these reports.",
     role: "Product Lead",
     toolkit: [
       "NL2SQL",
-      "Retrieval-Augmented Generation (RAG)",
-      "Advanced prompt engineering (context injection, structured prompting, failure handling)",
-      "Sophisticated Guardrails",
+      "RAG",
+      "Advanced Prompt Engineering",
+      "LLM Harness / Guardrails",
       "LLM as Judge",
       "Observability framework",
-      "KPI instrumentation",
       "User Feedback loop",
       "Reusable report layer",
       "End-to-end security framework",
@@ -130,40 +139,41 @@ export const projects: Project[] = [
     category: "Products",
     goal:
       "Design and deploy a conversational AI platform to serve two critical functions: enable B2B customers to get instant answers to operational questions, and accelerate onboarding and training of new associates through guided, context-aware assistance.",
+    impactSectionLabel: "Accomplishments",
     impactSections: [
       {
         heading: "Customer-facing (B2B support)",
         bullets: [
           "Reduced customer support load through self-serve query resolution",
-          "Improved response time and consistency across interactions via always-available support",
+          "Improved response time and consistency across interactions",
         ],
       },
       {
         heading: "Internal (training & onboarding)",
         bullets: [
-          "Accelerated onboarding of new associates with real-time, contextual guidance",
-          "Reduced dependency on trainers and documentation-heavy processes",
+          "Accelerated onboarding of new associates with real-time guidance",
+          "Reduced dependency on trainers and documentation",
         ],
       },
       {
         heading: "Platform-level",
         bullets: [
           "Created a unified knowledge layer powering multiple workflows, saving business $0.5M annually",
-          "Scaled support and training without a proportional increase in headcount",
+          "Scaled support, training without a proportional increase in engineering effort",
         ],
       },
     ],
+    bottomLine:
+      "Saved around half a million yearly in customer support and training costs.",
     role: "Product Lead",
     toolkit: [
-      "Retrieval-Augmented Generation (RAG)",
+      "RAG",
       "Vector Database",
-      "Contextual and Multi-Turn Conversation",
-      "Hallucination prevention",
+      "Contextual Conversation",
+      "Hallucination Prevention",
       "LLM as Judge",
-      "Defense against prompt injection attacks",
-      "Observability framework (conversation tracking, failure analysis, usage patterns)",
-      "Feedback loops",
-      "Role-based permissions",
+      "Observability Framework",
+      "Feedback Loops",
     ],
     artifacts: [],
     artifactModalUndisclosed: true,
@@ -174,29 +184,31 @@ export const projects: Project[] = [
     category: "Products",
     goal:
       "Lead an organization-wide transformation to adopt AI-native ways of working by repositioning AI from a perceived threat to an enabler, focusing on augmenting human capability, accelerating delivery, and empowering teams to build faster and smarter without reducing workforce value.",
+    impactSectionLabel: "Accomplishments",
     role: "Transformation Lead",
     toolkit: [
       "Operating Model Redesign",
       "Change Management",
       "Stakeholder Alignment",
-      "Narrative and Perception (AI as augmentation vs. replacement)",
-      "Executive and team-level enablement workshops",
-      "AI-assisted development environments (Cursor, GitHub Copilot)",
-      "Structured prompt engineering playbooks",
+      "Narrative and Perception",
+      "AI-assisted Development",
+      "Structured Prompt Engineering Playbooks",
     ],
+    bottomLine:
+      "Transformed the engineering operational model for the company to an AI-first operating model reducing delivery time to half.",
     impactSections: [
       {
         heading: "Organizational Adoption & Culture Shift",
         bullets: [
-          "Successfully convinced a traditionally skeptical organization to adopt AI, even when initial sentiment viewed it as a threat to jobs",
-          "Reframed AI as a tool for acceleration, not replacement, leading to general acceptance and engagement",
+          "Successfully convinced a skeptical organization to adopt AI, even when initial sentiment viewed it as a threat",
+          "Reframed AI as a tool for acceleration, not replacement",
         ],
       },
       {
         heading: "Delivery Acceleration",
         bullets: [
           "Improved the speed of execution by 50% by embedding AI into day-to-day workflows",
-          "Reduced dependency on linear development cycles by enabling rapid prototyping and iteration, fully driven by business teams",
+          "Enabled rapid prototyping and iteration, fully driven by business teams",
         ],
       },
       {
@@ -239,6 +251,8 @@ export const projects: Project[] = [
       "Customer segmentation and targeting",
       "Business KPI alignment",
     ],
+    bottomLine:
+      "Drove a scalable, data-driven targeting strategy that maximized high-propensity customer capture and significantly improved campaign ROI.",
     artifacts: [
       artifactEntry("Key Results", "Executive summary and key outcomes.", [
         `${LOAN_CAMPAIGN_ARTIFACTS}/ExecutiveSummary.png`,
@@ -289,6 +303,8 @@ export const projects: Project[] = [
       "Overfitting Detection",
       "Business KPI alignment",
     ],
+    bottomLine:
+      "Developed a high-recall, production-ready churn model that maximized at-risk customer identification and enabled targeted retention to protect revenue.",
     artifacts: [
       artifactEntry("Key Results", "Executive summary and key outcomes.", [
         `${CREDIT_CARD_CHURN_ARTIFACTS}/ExecutiveSummary.png`,
@@ -334,15 +350,18 @@ export const projects: Project[] = [
     ],
     role: "Researcher / Builder",
     toolkit: [
-      "NLP pipelines for sentiment analysis (multi-class classification: positive, negative, neutral)",
-      "Word embeddings (Word2Vec, GloVe, Sentence Transformers)",
-      "Model evaluation and bias detection (overfitting analysis, class imbalance handling)",
-      "Hyperparameter tuning framework (Randomized Search, validation pipelines)",
-      "Advanced prompt engineering (role, task, instruction, structured output design)",
-      "Structured output parsing (JSON extraction, post-processing pipelines)",
-      "Temporal aggregation framework (weekly sentiment analysis)",
-      "Business KPI alignment (F1 optimization, decision accuracy for investment use cases)",
+      "NLP Pipelines",
+      "Word2Vec",
+      "GloVe",
+      "Sentence Transformers",
+      "Overfitting Analysis",
+      "Class Imbalance Handling",
+      "Hyperparameter Tuning",
+      "Advanced Prompt Engineering",
+      "Temporal Aggregation",
     ],
+    bottomLine:
+      "Built a robust NLP-driven sentiment intelligence system that delivered decision-ready market insights while preventing unreliable model deployment in high-stakes investment contexts.",
     artifacts: [
       artifactEntry("Key Results", "Executive summary and key outcomes.", [
         `${STOCK_SENTIMENT_ARTIFACTS}/ExecutiveSummary.png`,
@@ -382,12 +401,15 @@ export const projects: Project[] = [
     category: "Imagination Labs",
     role: "Experimenter / AI Product Builder",
     goal:
-      "Build an AI-native content platform that transforms user prompts into fully generated long form videos with character, voice and scene continuity — automating the end-to-end pipeline from screenplay creation to final video production and distribution. Build the right harness to overcome the limitations of the current diffusion models.",
+      "Build an AI-native content platform that transforms user prompts into fully generated long form videos with character, voice and scene continuity",
+    impactSectionLabel: "Accomplishments",
     impactBullets: [
       "Designed and prototyped a multi-agent AI pipeline for automated storytelling",
       "Validated feasibility of generating consistent characters, scenes, and narrative flow using GenAI",
       "Reduced manual video production effort by ~80 –90%",
       "Established foundation for a scalable AI content platform (YouTube-first distribution, SaaS potential)",
+      "Automated the end-to-end pipeline from screenplay creation to final video production and distribution",
+      "Building the consistency harness to overcome the limitations of the current diffusion models.",
     ],
     toolkit: [
       "Intelligent Situation and Screenplay Generation",
@@ -403,7 +425,10 @@ export const projects: Project[] = [
       "Agentic Evaluation",
       "YouTube Publishing",
     ],
+    bottomLine:
+      "Created YouTube channels using consistent characters, contunuing to experiment with long form videos",
     artifacts: [],
+    artifactModalUndisclosed: true,
     artifactLinks: [
       { kind: "external", label: "Demo Video", url: "https://www.youtube.com/watch?v=YveTm6DmPWM" },
       { kind: "tmysMap", label: "TMYS Agentic Map" },
