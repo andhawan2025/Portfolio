@@ -78,8 +78,8 @@ export const projects: Project[] = [
     goal:
       "Stabilize and scale pricing operations by augmenting current pricing processes with an ML-powered pricing engine, restoring speed and consistency without requiring a replacement hire after the departure of the company's sole pricing expert.",
     impactBullets: [
-      "Restored pricing velocity and eliminated quote backlogs following disruption in pricing operations",
       "Reduced reliance on manual workflows, improving efficiency and analyst productivity (~90% effort reduction)",
+      "Restored pricing velocity and eliminated quote backlogs following disruption in pricing operations",
       "Maintained continuity without additional headcount, avoiding the need for a specialized pricing hire",
       "Improved pricing consistency and margin reliability through standardized, model-driven decisioning",
     ],
