@@ -231,7 +231,7 @@ export const projects: Project[] = [
   },
   {
     id: "customer-targeting-revenue",
-    title: "ML Driven Customer Targeting & Revenue Optimization Platform",
+    title: "Customer Targeting & Revenue Optimization",
     category: "Academics/Research",
     goal:
       "Design and deploy a predictive AI system to improve customer conversion by identifying high-propensity segments for personal loan campaigns, enabling more efficient and revenue-driven targeting.",
@@ -282,7 +282,7 @@ export const projects: Project[] = [
   },
   {
     id: "customer-retention-churn-intelligence",
-    title: "Customer Retention & Revenue Protection Intelligence",
+    title: "Customer Retention & Revenue Protection",
     category: "Academics/Research",
     goal:
       "Design and optimize a predictive AI system to identify customers at high risk of churn, enabling proactive retention strategies to protect revenue.",
