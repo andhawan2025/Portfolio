@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import { portfolioPath } from "@/lib/site-paths"
 
 export const metadata: Metadata = {
-  title: "Anubhav Dhawan — AI/ML Portfolio",
+  title: "Anubhav Dhawan Portfolio",
   description:
-    "AI/ML product leadership — enterprise search, industrial AI, fraud, personalization, and research.",
+    "AI/ML product leadership.",
   generator: "v0.app",
   icons: {
     icon: [
