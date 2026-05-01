@@ -236,11 +236,11 @@ export const projects: Project[] = [
     goal:
       "Design and deploy a predictive AI system to improve customer conversion by identifying high-propensity segments for personal loan campaigns, enabling more efficient and revenue-driven targeting.",
     impactBullets: [
-      "Improved campaign effectiveness by identifying high-conversion customer segments based on income, education, and family attributes",
-      "Increased revenue potential by prioritizing high-propensity customers and reducing wasted outreach",
-      "Established recall as the primary optimization metric to maximize capture of potential converters",
-      "Enabled scalable, repeatable targeting strategy for future campaigns and new customer onboarding",
-      "Provided clear, data-driven insights into key drivers of customer conversion to inform business strategy",
+      "Identified a high-value target segment (high-income, highly educated, large households) with the strongest propensity for personal loan uptake, enabling precise campaign targeting.",
+      "Enabled dual deployment strategy: proactive targeting of existing customers and real-time cross-sell recommendations during new customer onboarding.",
+      "Validated Decision Tree as the optimal production model, balancing performance and complexity, with post-pruning tradeoffs clearly evaluated.",
+      "Established Recall as the primary success metric (~maximizing capture of potential buyers), directly aligning model performance with revenue growth objectives.",
+      "Diagnosed data imbalance (9:1 skew) and recommended actionable improvements, including external data sourcing and resampling techniques to enhance model robustness.",
     ],
     role: "Researcher / Builder",
     toolkit: [
@@ -254,7 +254,7 @@ export const projects: Project[] = [
       "Business KPI alignment",
     ],
     bottomLine:
-      "Drove a scalable, data-driven targeting strategy that maximized high-propensity customer capture and significantly improved campaign ROI.",
+      "Established that advanced and costly pruning techniques don't provide better models in case of class imbalance in input data, and recommended the client to optimize the cost of implementing their product.",
     artifacts: [
       artifactEntry("Key Results", "Executive summary and key outcomes.", [
         `${LOAN_CAMPAIGN_ARTIFACTS}/ExecutiveSummary.png`,
@@ -287,11 +287,11 @@ export const projects: Project[] = [
     goal:
       "Design and optimize a predictive AI system to identify customers at high risk of churn, enabling proactive retention strategies to protect revenue.",
     impactBullets: [
-      "Built and evaluated 18+ models across multiple sampling strategies to identify the most robust, production-ready solution",
-      "Identified key behavioral drivers of churn (transaction volume, spend patterns, balance trends), enabling targeted retention strategies",
-      "Improved model generalization and reduced overfitting by applying under-sampling techniques to address class imbalance",
-      "Achieved high recall (~98%) and strong accuracy (~85%) on validation data, ensuring maximum identification of at-risk customers",
-      "Established recall as the primary optimization metric to maximize revenue protection by minimizing missed churn cases",
+      "Evaluated multiple ML models and selected a Gradient Boosting model as the optimal production solution, achieving high recall (~98%) and strong accuracy (~85%) with minimal overfitting.",
+      "Improved model robustness through class imbalance handling (0.85:0.15) using under/over-sampling techniques, resulting in strong generalization and near-perfect test performance.",
+      "Defined Recall as the primary optimization metric to maximize churn detection and revenue protection, with Accuracy as a secondary measure.",
+      "Identified key churn drivers (decline in transaction amount/count, low engagement, high revolving balance), enabling targeted retention strategies.",
+      "Translated model insights into business actions by pinpointing high-risk customer segments and disproving assumed drivers (income, age, education), refining targeting efficiency.",
     ],
     role: "Researcher / Builder",
     toolkit: [
@@ -306,7 +306,7 @@ export const projects: Project[] = [
       "Business KPI alignment",
     ],
     bottomLine:
-      "Developed a high-recall, production-ready churn model that maximized at-risk customer identification and enabled targeted retention to protect revenue.",
+      "Enabled early churn detection to protect high-value customer revenue by improving the performance of the base model from 77% to 97% using Gradient Boosting with class imbalance handling (under/over-sampling) and optimized hyperparameter tuning validated via cross-validation.",
     artifacts: [
       artifactEntry("Key Results", "Executive summary and key outcomes.", [
         `${CREDIT_CARD_CHURN_ARTIFACTS}/ExecutiveSummary.png`,
@@ -344,11 +344,11 @@ export const projects: Project[] = [
     goal:
       "Design an AI-driven system to analyze market sentiment from news data and generate actionable insights to support investment decision-making.",
     impactBullets: [
-      "Built and evaluated multiple NLP pipelines (Word2Vec, GloVe, Sentence Transformers) to model sentiment and assess correlation with stock performance",
-      "Identified critical limitations in model generalization (overfitting, class bias), preventing premature deployment and avoiding misleading investment signals",
-      "Established F1 score as the primary metric to balance precision and recall for high-stakes financial decisions",
-      "Developed an LLM-powered summarization layer to extract top positive and negative market events on a weekly basis",
-      "Delivered structured, decision-ready insights (top sentiment drivers) instead of raw text, improving usability for business stakeholders",
+      "Built end-to-end sentiment intelligence system (classification + extraction models) to link news sentiment with stock performance and support investment decision-making.",
+      "Evaluated 6+ model variations across embeddings (Word2Vec, GloVe, Sentence Transformers) with hyperparameter tuning, selecting the best-performing GloVe model (F1 ~53%) with stable test performance.",
+      "Diagnosed key model limitations (overfitting, class imbalance, prediction bias), preventing unreliable deployment and establishing a roadmap for more robust modeling.",
+      "Established F1 score as the primary evaluation metric to balance precision and recall for high-stakes financial decision accuracy.",
+      "Delivered strategic insights beyond modeling—revealing weak sentiment–price correlation and guiding shift toward multi-signal investment strategies while identifying opportunities for scalable, productized sentiment scoring solutions.",
     ],
     role: "Researcher / Builder",
     toolkit: [
@@ -363,7 +363,7 @@ export const projects: Project[] = [
       "Temporal Aggregation",
     ],
     bottomLine:
-      "Built a robust NLP-driven sentiment intelligence system that delivered decision-ready market insights while preventing unreliable model deployment in high-stakes investment contexts.",
+      "Improved investment decision-making by uncovering weak sentiment–stock price correlation and preventing reliance on misleading signals, by building and evaluating multiple NLP models (Word2Vec, GloVe, Sentence Transformers), selecting a tuned GloVe model (F1 ~53%), and identifying key limitations such as overfitting, class imbalance, and prediction bias.",
     artifacts: [
       artifactEntry("Key Results", "Executive summary and key outcomes.", [
         `${STOCK_SENTIMENT_ARTIFACTS}/ExecutiveSummary.png`,
@@ -441,7 +441,7 @@ export const projects: Project[] = [
     title: "WhimsyWorks Toon Studios",
     category: "Imagination Labs",
     role: "Chief Joy Arrchitect",
-    goal: "Create delightful, emotionally engaging content experiences powered by Tell Me Your Story",
+    goal: "Create delightful, emotionally engaging content experiences",
     impact: "Built a repeatable system that engaged audience on a regular basis",
     toolkit: ["Tell Me Your Story"],
     artifacts: [],
