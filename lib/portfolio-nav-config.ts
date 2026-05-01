@@ -11,6 +11,12 @@ export const PORTFOLIO_NAV_ORDER = [
   "imagination",
 ] as const
 
+/**
+ * Bottom clearance (px) for the fixed left rail on `/portfolio` and `/portfolio/details` so the
+ * contact block sits in the same viewport band (matches story chevron clearance on the scroll shell).
+ */
+export const PORTFOLIO_RAIL_BOTTOM_INSET_PX = 72
+
 export type PortfolioNavRailKey = (typeof PORTFOLIO_NAV_ORDER)[number]
 
 export const PORTFOLIO_NAV_TAB_CONFIG: Record<

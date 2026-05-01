@@ -17,6 +17,7 @@ import type { ProjectCategory } from "@/lib/projects"
 import {
   PORTFOLIO_NAV_ORDER,
   PORTFOLIO_NAV_TAB_CONFIG,
+  PORTFOLIO_RAIL_BOTTOM_INSET_PX,
   portfolioNavKeyToDetailHash,
   type PortfolioNavRailKey,
 } from "@/lib/portfolio-nav-config"
@@ -85,8 +86,13 @@ const LOGOS_EDUCATION: { src: string; alt: string }[] = [
 const EXP_LOGO_COUNT = LOGOS_EXPERIENCE.length
 const EDU_LOGO_COUNT = LOGOS_EDUCATION.length
 
-/** Minimal scroll range after the interleaved story. */
-const TAIL_PAD_P = 0.012
+/**
+ * Final fraction of scroll after the interleaved story: story layers fade out, toolkit
+ * word cloud fades in and stays at full opacity through p = 1.
+ */
+const TAIL_PAD_P = 0.055
+/** Crossfade into the word cloud over this many p units before the story phase ends. */
+const WORD_CLOUD_FADE_IN_SPAN_P = 0.028
 /** Scroll `p` where interleaved story begins — aligned near intro fade so story ramps in with little dead air. */
 const INTERLEAVED_START_P = 0.06
 /**
@@ -183,7 +189,7 @@ export function PortfolioHomeScroll() {
   const trackRef = useRef<HTMLDivElement>(null)
   const heroMeasureRef = useRef<HTMLDivElement>(null)
   const [p, setP] = useState(0)
-  const [insets, setInsets] = useState({ top: 132, bottom: 72 })
+  const [insets, setInsets] = useState({ top: 132, bottom: PORTFOLIO_RAIL_BOTTOM_INSET_PX })
 
   const slides = useMemo(() => getPortfolioBottomLineSlides(), [])
   const n = slides.length
@@ -210,7 +216,7 @@ export function PortfolioHomeScroll() {
     const h = heroMeasureRef.current?.offsetHeight
     setInsets({
       top: (h ?? 132) + 6,
-      bottom: 72,
+      bottom: PORTFOLIO_RAIL_BOTTOM_INSET_PX,
     })
   }, [])
 
@@ -267,6 +273,10 @@ export function PortfolioHomeScroll() {
     p < INTERLEAVED_START_P || p > interleavedEndP
       ? -1
       : clamp01((p - INTERLEAVED_START_P) / interleavedSpanP)
+
+  const wordCloudFadeInStart = Math.max(INTERLEAVED_START_P, interleavedEndP - WORD_CLOUD_FADE_IN_SPAN_P)
+  const wordCloudOp =
+    p >= interleavedEndP ? 1 : p <= wordCloudFadeInStart ? 0 : (p - wordCloudFadeInStart) / (interleavedEndP - wordCloudFadeInStart)
 
   const navHighlight: Record<PortfolioNavRailKey, number> = useMemo(() => {
     const acc: Record<PortfolioNavRailKey, number> = {
@@ -356,10 +366,10 @@ export function PortfolioHomeScroll() {
       {/* Far-left tab rail (matches projects-grid tab chrome) + full remaining width for story */}
       <div className="pointer-events-none fixed inset-x-0 z-40" style={{ top: insets.top, bottom: insets.bottom }}>
         <nav
-          className="pointer-events-auto absolute left-0 top-0 bottom-0 flex w-52 min-h-0 flex-col gap-1 rounded-r-lg border-r border-border/70 bg-secondary/50 px-1.5 pl-2 pt-1.5 sm:w-60 sm:px-2 sm:pl-2.5 sm:pt-2"
+          className="pointer-events-auto absolute left-0 top-0 bottom-0 flex w-52 min-h-0 flex-col gap-1 overflow-hidden rounded-r-lg border-r border-border/70 bg-secondary/50 px-1.5 pl-2 pt-1.5 sm:w-60 sm:px-2 sm:pl-2.5 sm:pt-2"
           aria-label="Scroll story sections"
         >
-          <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain pr-0.5">
+          <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overflow-x-hidden overscroll-contain pr-0.5 [scrollbar-gutter:stable]">
           {PORTFOLIO_NAV_ORDER.map((key) => {
             const cfg = PORTFOLIO_NAV_TAB_CONFIG[key]
             const Icon = cfg.icon
@@ -535,6 +545,19 @@ export function PortfolioHomeScroll() {
                   </div>
                 )
               })}
+
+              <div
+                className="pointer-events-none absolute inset-0 z-[56] flex items-center justify-center overflow-hidden px-3 sm:px-5"
+                style={fixedFadeStyle(wordCloudOp, { passWheelToDocument: true })}
+              >
+                <img
+                  src={portfolioPath("/PortfolioWordCloud.png")}
+                  alt="Word cloud of toolkit terms and skills from portfolio projects"
+                  className="h-auto w-full max-h-[min(36dvh,calc(50svh-6rem))] max-w-[min(21rem,48%)] object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
 
               <div
                 className="absolute inset-0 z-[52] overflow-hidden"

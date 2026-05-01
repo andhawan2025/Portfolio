@@ -101,7 +101,7 @@ export function PortfolioNavContactBlock({ className }: { className?: string }) 
   return (
     <div
       className={cn(
-        "mt-auto shrink-0 border-t border-border/60 pt-2 pb-1.5 sm:pt-2.5 sm:pb-2",
+        "shrink-0 border-t border-border/60 pt-2 pb-1.5 sm:pt-2.5 sm:pb-2",
         className
       )}
     >

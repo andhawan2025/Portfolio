@@ -28,10 +28,10 @@ export function PortfolioDetailsLeftNav({
 
   return (
     <nav
-      className="pointer-events-auto absolute left-0 top-0 bottom-0 flex w-52 min-h-0 flex-col gap-1 rounded-r-lg border-r border-border/70 bg-secondary/50 px-1.5 pl-2 pt-1.5 sm:w-60 sm:px-2 sm:pl-2.5 sm:pt-2"
+      className="pointer-events-auto absolute left-0 top-0 bottom-0 flex w-52 min-h-0 flex-col gap-1 overflow-hidden rounded-r-lg border-r border-border/70 bg-secondary/50 px-1.5 pl-2 pt-1.5 sm:w-60 sm:px-2 sm:pl-2.5 sm:pt-2"
       aria-label="Portfolio sections"
     >
-      <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain pr-0.5">
+      <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overflow-x-hidden overscroll-contain pr-0.5 [scrollbar-gutter:stable]">
         {PORTFOLIO_NAV_ORDER.map((key) => {
           const cfg = PORTFOLIO_NAV_TAB_CONFIG[key]
           const Icon = cfg.icon
