@@ -339,7 +339,7 @@ export const projects: Project[] = [
   },
   {
     id: "market-sentiment-investment-analysis",
-    title: "Market Sentiment & Investment Analysis",
+    title: "Market Sentiment &  Investment Analysis",
     category: "Academics/Research",
     goal:
       "Design an AI-driven system to analyze market sentiment from news data and generate actionable insights to support investment decision-making.",
@@ -428,7 +428,7 @@ export const projects: Project[] = [
       "YouTube Publishing",
     ],
     bottomLine:
-      "Created YouTube channels using consistent characters, contunuing to experiment with long form videos",
+      "Created a harness around video GenAI models for enforcing character, voice and scene continuity for long form videos",
     artifacts: [],
     artifactModalUndisclosed: true,
     artifactLinks: [

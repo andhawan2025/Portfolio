@@ -1,16 +1,10 @@
-import { HeroSection } from "@/components/hero-section"
-import { ProjectsGrid } from "@/components/projects-grid"
-import { ContactSection } from "@/components/contact-section"
+import { PortfolioHomeScroll } from "@/components/portfolio-home-scroll"
 
-/** Main portfolio shell: width min(1100px, 92vw), vertical rhythm. */
-export default function PortfolioPage() {
+/** Home: fixed hero + footer; scroll-driven fixed-position fades for intro + bottom lines. */
+export default function PortfolioHomePage() {
   return (
     <main className="min-h-screen bg-background">
-      <div className="mx-auto w-[min(1100px,92vw)] pt-16 pb-16 sm:pt-20 sm:pb-16">
-        <HeroSection />
-        <ProjectsGrid />
-        <ContactSection />
-      </div>
+      <PortfolioHomeScroll />
     </main>
   )
 }

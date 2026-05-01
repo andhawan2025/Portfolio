@@ -61,3 +61,12 @@ export const categoryToolkitPillClass: Record<ProjectCategory, string> = {
   "Academics/Research": "bg-emerald-500/20 text-emerald-500",
   "Imagination Labs": "bg-amber-500/20 text-amber-500",
 }
+
+export const categoryBottomLineBannerClass: Record<ProjectCategory, string> = {
+  Products:
+    "border-primary/30 bg-primary/20 text-primary shadow-[0_10px_30px_hsl(var(--primary)/0.22)]",
+  "Academics/Research":
+    "border-emerald-500/30 bg-emerald-500/20 text-emerald-400 shadow-[0_10px_30px_rgba(16,185,129,0.22)]",
+  "Imagination Labs":
+    "border-amber-500/30 bg-amber-500/20 text-amber-400 shadow-[0_10px_30px_rgba(245,158,11,0.22)]",
+}

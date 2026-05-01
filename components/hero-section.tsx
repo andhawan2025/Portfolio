@@ -1,36 +1,49 @@
-import { ProfileAvatar } from "@/components/profile-avatar"
+"use client"
+
+import { SectionRevealBlock } from "@/components/portfolio-reveal"
+import { PortfolioHeroTopBand } from "@/components/portfolio-hero-top-band"
+import { useInView } from "@/hooks/use-in-view"
+import { useReducedMotion } from "@/hooks/use-reduced-motion"
+import { HERO_BIO_PARAGRAPH } from "@/lib/hero-copy"
 import { portfolioPath } from "@/lib/site-paths"
 
-/** Hero copy and layout; stat cards from `lib/hero-stats.ts`. */
-
+/** Hero: top band + bio + logos (used when reduced motion avoids scroll shell). */
 export function HeroSection() {
+  const { ref, inView } = useInView<HTMLElement>({
+    rootMargin: "0px 0px -5% 0px",
+    threshold: 0.05,
+  })
+  const reduceMotion = useReducedMotion()
+  const active = reduceMotion || inView
+
   return (
-    <header className="grid grid-cols-1 gap-6 border-b border-border pb-7 lg:grid-cols-[1.5fr_1fr] lg:gap-6">
-      <div className="min-w-0">
-        <div className="flex items-center gap-3">
-          <ProfileAvatar />
-          <h1 className="m-0 min-w-0 flex-1 text-[clamp(1.75rem,4vw,2.8rem)] font-bold leading-tight tracking-tight text-foreground">
-            Anubhav Dhawan
-          </h1>
-        </div>
-        <p className="my-2 ml-[88px] text-[1rem] font-normal uppercase leading-normal tracking-[0.08em] text-primary lg:ml-[104px]">
-          AI/ML Product Leader & Consultant
-        </p>
-        <p className="mt-3 ml-[88px] leading-[1.7] text-foreground lg:ml-[104px]">
-          AI Product Leader with over 15 years across Amazon, Deloitte, and Startups. Building 0 → 1 products using Agentic AI, GenAI, LLMs, RAG, and ML to automate workflows, optimize decisions, and unlock value.
-        </p>
+    <header
+      ref={ref}
+      data-inview={active ? "true" : "false"}
+      className="group/hero-reveal flex flex-col gap-0"
+    >
+      <div className="border-b border-border pb-3">
+        <SectionRevealBlock groupName="hero-reveal" delayMs={0}>
+          <PortfolioHeroTopBand />
+        </SectionRevealBlock>
       </div>
 
-      <div className="flex h-full w-full items-start justify-end lg:pt-[62px]">
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <img
-            src={portfolioPath("/companylogos/Logos.png")}
-            alt="Company and education logos"
-            className="mx-auto h-auto w-[31rem] max-w-full rounded-xl object-contain"
-          />
+      <div className="grid grid-cols-1 gap-6 pt-7 lg:grid-cols-[1.5fr_1fr] lg:gap-6">
+        <SectionRevealBlock groupName="hero-reveal" delayMs={180}>
+          <p className="m-0 leading-[1.7] text-foreground lg:pr-2">{HERO_BIO_PARAGRAPH}</p>
+        </SectionRevealBlock>
+        <div className="flex h-full w-full items-start justify-end lg:pt-[62px]">
+          <SectionRevealBlock groupName="hero-reveal" delayMs={270} className="w-full max-w-full">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+              <img
+                src={portfolioPath("/companylogos/Logos.png")}
+                alt="Company and education logos"
+                className="mx-auto h-auto w-[31rem] max-w-full rounded-xl object-contain"
+              />
+            </div>
+          </SectionRevealBlock>
         </div>
       </div>
-
     </header>
   )
 }

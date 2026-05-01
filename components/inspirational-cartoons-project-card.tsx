@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react"
 import { User, Target, TrendingUp, Wrench } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { PortfolioRevealBlock } from "@/components/portfolio-reveal"
+import { useInView } from "@/hooks/use-in-view"
+import { useReducedMotion } from "@/hooks/use-reduced-motion"
+import { cardRevealTiming } from "@/lib/portfolio-reveal-timing"
 import type { InspirationalCartoonsColumn, Project } from "@/lib/projects"
 import { portfolioPath } from "@/lib/site-paths"
 import {
@@ -114,37 +118,55 @@ const categoryAccentTrackClass: Record<Project["category"], string> = {
 export function InspirationalCartoonsProjectCard({ project, index }: InspirationalCartoonsProjectCardProps) {
   const cat = project.category
   const columns = project.inspirationalCartoonsColumns ?? []
+  const t = cardRevealTiming(
+    project.toolkit.length,
+    Boolean(project.bottomLine?.trim() || project.impact?.trim())
+  )
+  const { ref, inView } = useInView<HTMLElement>({
+    rootMargin: "0px 0px -8% 0px",
+    threshold: 0.06,
+  })
+  const reduceMotion = useReducedMotion()
+  const revealActive = reduceMotion || inView
+
   if (columns.length !== 2) return null
 
   return (
     <article
-      className={`group relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 ${categoryBorderHoverClass[cat]} hover:bg-card/80`}
-      style={{ animationDelay: `${index * 100}ms` }}
+      ref={ref}
+      data-inview={revealActive ? "true" : "false"}
+      className={`group group/pcard relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 ${categoryBorderHoverClass[cat]} hover:bg-card/80`}
     >
       <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge className={`shrink-0 font-mono text-xs border-0 ${categoryBadgeClass[cat]}`}>
-              {project.category}
-            </Badge>
-            <h3
-              className={`text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
-            >
-              {project.title}
-            </h3>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <User className="size-3.5" />
-            {project.role}
-          </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <PortfolioRevealBlock delayMs={t.title}>
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge className={`shrink-0 font-mono text-xs border-0 ${categoryBadgeClass[cat]}`}>
+                {project.category}
+              </Badge>
+              <h3
+                className={`text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
+              >
+                {project.title}
+              </h3>
+            </div>
+          </PortfolioRevealBlock>
+          <PortfolioRevealBlock delayMs={t.meta}>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <User className="size-3.5" />
+              {project.role}
+            </div>
+          </PortfolioRevealBlock>
         </div>
-        <span className="font-mono text-sm text-muted-foreground">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+        <PortfolioRevealBlock delayMs={t.indexBadge} emphasize chip className="inline-block shrink-0">
+          <span className="font-mono text-sm text-muted-foreground">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </PortfolioRevealBlock>
       </div>
 
       <div className="mb-8 grid w-full gap-6 md:grid-cols-3">
-        <div className="relative min-w-0">
+        <PortfolioRevealBlock delayMs={t.goal} className="relative min-w-0">
           <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
             <span
               className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full border bg-card text-[11px] font-semibold ${categoryAccentTextClass[cat]} ${categoryAccentBorderClass[cat]}`}
@@ -159,26 +181,32 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
             className={`pointer-events-none absolute left-[6.9rem] right-[-0.75rem] top-3 hidden h-px md:block ${categoryAccentTrackClass[cat]}`}
             aria-hidden
           />
-        </div>
+        </PortfolioRevealBlock>
         <div className="relative min-w-0">
-          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
-            <span
-              className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full border bg-card text-[11px] font-semibold ${categoryAccentTextClass[cat]} ${categoryAccentBorderClass[cat]}`}
-            >
-              2
-            </span>
-            <Wrench className={`size-3 ${categoryAccentTextClass[cat]}`} />
-            <span className={categoryAccentTextClass[cat]}>Toolkit</span>
-          </div>
+          <PortfolioRevealBlock delayMs={t.toolkitLabel}>
+            <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
+              <span
+                className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full border bg-card text-[11px] font-semibold ${categoryAccentTextClass[cat]} ${categoryAccentBorderClass[cat]}`}
+              >
+                2
+              </span>
+              <Wrench className={`size-3 ${categoryAccentTextClass[cat]}`} />
+              <span className={categoryAccentTextClass[cat]}>Toolkit</span>
+            </div>
+          </PortfolioRevealBlock>
           {project.toolkit.length > 0 ? (
             <div className="ml-8 flex flex-wrap gap-1.5">
-              {project.toolkit.map((tool) => (
-                <span
+              {project.toolkit.map((tool, i) => (
+                <PortfolioRevealBlock
                   key={tool}
-                  className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
+                  chip
+                  delayMs={t.toolkitChip(i)}
+                  className="inline-block"
                 >
-                  {tool}
-                </span>
+                  <span className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground">
+                    {tool}
+                  </span>
+                </PortfolioRevealBlock>
               ))}
             </div>
           ) : null}
@@ -187,7 +215,7 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
             aria-hidden
           />
         </div>
-        <div className="min-w-0">
+        <PortfolioRevealBlock delayMs={t.bottomLine} emphasize className="min-w-0">
           <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
             <span
               className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full border bg-card text-[11px] font-semibold ${categoryAccentTextClass[cat]} ${categoryAccentBorderClass[cat]}`}
@@ -198,16 +226,20 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
             <span className={categoryAccentTextClass[cat]}>Bottom Line</span>
           </div>
           <p className="ml-8 text-sm leading-relaxed text-secondary-foreground">{project.impact ?? ""}</p>
-        </div>
+        </PortfolioRevealBlock>
       </div>
 
       <div className="grid gap-10 md:grid-cols-2 md:gap-8">
-        <InspirationalColumn column={columns[0]} cat={cat} quoteIntervalMs={DOLMA_QUOTE_INTERVAL_MS} />
-        <InspirationalColumn column={columns[1]} cat={cat} quoteIntervalMs={KIT_CAT_QUOTE_INTERVAL_MS} />
+        <PortfolioRevealBlock delayMs={t.impact}>
+          <InspirationalColumn column={columns[0]} cat={cat} quoteIntervalMs={DOLMA_QUOTE_INTERVAL_MS} />
+        </PortfolioRevealBlock>
+        <PortfolioRevealBlock delayMs={t.impact + 70}>
+          <InspirationalColumn column={columns[1]} cat={cat} quoteIntervalMs={KIT_CAT_QUOTE_INTERVAL_MS} />
+        </PortfolioRevealBlock>
       </div>
 
       <div
-        className={`absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full transition-transform group-hover:translate-x-10 group-hover:-translate-y-10 ${categoryCornerGlowClass[cat]}`}
+        className={`absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full transition-transform group-hover/pcard:translate-x-10 group-hover/pcard:-translate-y-10 ${categoryCornerGlowClass[cat]}`}
       />
     </article>
   )

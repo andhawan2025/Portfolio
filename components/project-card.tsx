@@ -1,6 +1,13 @@
 "use client"
 
 import { useState, type ReactNode } from "react"
+import { useInView } from "@/hooks/use-in-view"
+import { useReducedMotion } from "@/hooks/use-reduced-motion"
+import { PortfolioRevealBlock } from "@/components/portfolio-reveal"
+import {
+  cardRevealTiming,
+  type PortfolioCardRevealTiming,
+} from "@/lib/portfolio-reveal-timing"
 import {
   ArrowUpRight,
   Target,
@@ -25,6 +32,7 @@ import { portfolioPath } from "@/lib/site-paths"
 import {
   categoryBadgeClass,
   categoryBorderHoverClass,
+  categoryBottomLineBannerClass,
   categoryCornerGlowClass,
   categoryImpactTextClass,
   categoryLinkClass,
@@ -48,15 +56,17 @@ function projectWithSingleArtifact(project: Project, artifactIndex: number): Pro
   return { ...project, artifacts: [slice] }
 }
 
-function ProjectCardGoalSection({ goal }: { goal: string }) {
+function ProjectCardGoalSection({ goal, delayMs }: { goal: string; delayMs: number }) {
   return (
-    <div>
-      <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        <Target className="size-3" />
-        Goal
+    <PortfolioRevealBlock delayMs={delayMs}>
+      <div>
+        <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <Target className="size-3" />
+          Goal
+        </div>
+        <p className="text-sm leading-relaxed text-secondary-foreground">{goal}</p>
       </div>
-      <p className="text-sm leading-relaxed text-secondary-foreground">{goal}</p>
-    </div>
+    </PortfolioRevealBlock>
   )
 }
 
@@ -65,40 +75,55 @@ function ProjectCardImpactSection({
   cat,
   headingClassName,
   contentClassName,
+  impactBaseDelay,
+  impactStagger,
 }: {
   project: Project
   cat: ProjectCategory
   headingClassName?: string
   contentClassName?: string
+  impactBaseDelay: number
+  impactStagger: (i: number) => number
 }) {
   const impactContentClass = contentClassName ?? categoryImpactTextClass[cat]
   return (
     <div className="min-w-0">
-      <div
-        className={`mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider ${
-          headingClassName ?? "text-muted-foreground"
-        }`}
-      >
-        <Zap className="size-3" />
-        {project.impactSectionLabel ??
-          (cat === "Academics/Research" ? "Accomplishments" : "Impact")}
-      </div>
+      <PortfolioRevealBlock delayMs={impactBaseDelay}>
+        <div
+          className={`mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider ${
+            headingClassName ?? "text-muted-foreground"
+          }`}
+        >
+          <Zap className="size-3" />
+          {project.impactSectionLabel ??
+            (cat === "Academics/Research" ? "Accomplishments" : "Impact")}
+        </div>
+      </PortfolioRevealBlock>
       {project.impactSections && project.impactSections.length > 0 ? (
         <ul
           className={`list-outside list-disc space-y-3 pl-4 text-sm leading-relaxed marker:font-normal ${impactContentClass}`}
         >
-          {project.impactSections.map((section) => (
+          {project.impactSections.map((section, si) => (
             <li key={section.heading} className="pl-1">
-              <span className="font-medium">{section.heading}</span>
-              <ul
-                className={`mt-1.5 list-outside list-[circle] space-y-1 pl-4 font-normal ${impactContentClass}`}
-              >
-                {section.bullets.map((line) => (
-                  <li key={`${section.heading}-${line}`} className="pl-0.5">
-                    {line}
-                  </li>
-                ))}
-              </ul>
+              <PortfolioRevealBlock delayMs={impactStagger(si)}>
+                <div>
+                  <span className="font-medium">{section.heading}</span>
+                  <ul
+                    className={`mt-1.5 list-outside list-[circle] space-y-1 pl-4 font-normal ${impactContentClass}`}
+                  >
+                    {section.bullets.map((line, bi) => (
+                      <li key={`${section.heading}-${line}`} className="pl-0.5">
+                        <PortfolioRevealBlock
+                          delayMs={impactStagger(si) + 36 + bi * 28}
+                          className="block min-w-0 max-w-full"
+                        >
+                          {line}
+                        </PortfolioRevealBlock>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </PortfolioRevealBlock>
             </li>
           ))}
         </ul>
@@ -106,48 +131,81 @@ function ProjectCardImpactSection({
         <ul
           className={`list-outside list-disc space-y-1.5 pl-4 text-sm leading-relaxed ${impactContentClass}`}
         >
-          {project.impactBullets.map((line) => (
+          {project.impactBullets.map((line, i) => (
             <li key={line} className="pl-0.5">
-              {line}
+              <PortfolioRevealBlock delayMs={impactStagger(i)} className="block min-w-0 max-w-full">
+                {line}
+              </PortfolioRevealBlock>
             </li>
           ))}
         </ul>
       ) : (
-        <p className={`text-sm leading-relaxed ${impactContentClass}`}>{project.impact ?? ""}</p>
+        <PortfolioRevealBlock delayMs={impactBaseDelay + 24}>
+          <p className={`text-sm leading-relaxed ${impactContentClass}`}>{project.impact ?? ""}</p>
+        </PortfolioRevealBlock>
       )}
     </div>
   )
 }
 
-function ProjectCardToolkitSection({ toolkit }: { toolkit: string[] }) {
+function ProjectCardToolkitSection({
+  toolkit,
+  chipBaseDelay,
+  chipsOnly = false,
+}: {
+  toolkit: string[]
+  chipBaseDelay: number
+  /** When true, only chips animate (parent already shows the Toolkit label). */
+  chipsOnly?: boolean
+}) {
   return (
     <div className="min-w-0">
-      <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        <Wrench className="size-3" />
-        Toolkit
-      </div>
+      {!chipsOnly ? (
+        <PortfolioRevealBlock delayMs={chipBaseDelay - 24}>
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <Wrench className="size-3" />
+            Toolkit
+          </div>
+        </PortfolioRevealBlock>
+      ) : null}
       <div className="flex flex-wrap gap-1.5">
-        {toolkit.map((tool) => (
-          <span
+        {toolkit.map((tool, i) => (
+          <PortfolioRevealBlock
             key={tool}
-            className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
+            chip
+            delayMs={chipBaseDelay + i * 36}
+            className="inline-block"
           >
-            {tool}
-          </span>
+            <span className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground">
+              {tool}
+            </span>
+          </PortfolioRevealBlock>
         ))}
       </div>
     </div>
   )
 }
 
-function ProjectCardBottomLineSection({ text, cat }: { text: string; cat: ProjectCategory }) {
+function ProjectCardBottomLineSection({
+  text,
+  cat,
+  delayMs,
+}: {
+  text: string
+  cat: ProjectCategory
+  delayMs: number
+}) {
   return (
     <div className="min-w-0">
-      <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        <TrendingUp className="size-3" />
-        Bottom Line
-      </div>
-      <p className={`text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}>{text}</p>
+      <PortfolioRevealBlock delayMs={delayMs - 20}>
+        <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <TrendingUp className="size-3" />
+          Bottom Line
+        </div>
+      </PortfolioRevealBlock>
+      <PortfolioRevealBlock emphasize delayMs={delayMs}>
+        <p className={`text-sm leading-relaxed ${categoryImpactTextClass[cat]}`}>{text}</p>
+      </PortfolioRevealBlock>
     </div>
   )
 }
@@ -170,22 +228,23 @@ const categoryAccentTrackClass: Record<ProjectCategory, string> = {
   "Imagination Labs": "bg-amber-500/50",
 }
 
-const categoryBottomLineBannerClass: Record<ProjectCategory, string> = {
-  Products:
-    "border-primary/30 bg-primary/20 text-primary shadow-[0_10px_30px_hsl(var(--primary)/0.22)]",
-  "Academics/Research":
-    "border-emerald-500/30 bg-emerald-500/20 text-emerald-400 shadow-[0_10px_30px_rgba(16,185,129,0.22)]",
-  "Imagination Labs":
-    "border-amber-500/30 bg-amber-500/20 text-amber-400 shadow-[0_10px_30px_rgba(245,158,11,0.22)]",
-}
-
-function ProjectCardBottomLineHighlight({ text, cat }: { text: string; cat: ProjectCategory }) {
+function ProjectCardBottomLineHighlight({
+  text,
+  cat,
+  delayMs,
+}: {
+  text: string
+  cat: ProjectCategory
+  delayMs: number
+}) {
   return (
-    <div
-      className={`rounded-xl border px-5 py-4 text-[0.945rem] font-normal leading-relaxed ${categoryBottomLineBannerClass[cat]}`}
-    >
-      {text}
-    </div>
+    <PortfolioRevealBlock emphasize delayMs={delayMs}>
+      <div
+        className={`rounded-xl border px-5 py-4 text-[0.945rem] font-normal leading-relaxed ${categoryBottomLineBannerClass[cat]}`}
+      >
+        {text}
+      </div>
+    </PortfolioRevealBlock>
   )
 }
 
@@ -230,25 +289,30 @@ function NumberedLeftSection({
   )
 }
 
-function PricingEngineLayout({ project, cat }: { project: Project; cat: ProjectCategory }) {
+function PricingEngineLayout({
+  project,
+  cat,
+  t,
+}: {
+  project: Project
+  cat: ProjectCategory
+  t: PortfolioCardRevealTiming
+}) {
   const bottomLine = project.bottomLine?.trim()
   return (
     <div className="grid w-full gap-6 md:grid-cols-[1.45fr_1fr]">
       <div className="flex min-w-0 flex-col gap-6 md:pr-4">
-        <NumberedLeftSection number={1} title="Goal" icon={<Target className="size-3" />} cat={cat}>
-          <p className="text-sm leading-relaxed text-secondary-foreground">{project.goal}</p>
-        </NumberedLeftSection>
+        <PortfolioRevealBlock delayMs={t.goal}>
+          <NumberedLeftSection number={1} title="Goal" icon={<Target className="size-3" />} cat={cat}>
+            <p className="text-sm leading-relaxed text-secondary-foreground">{project.goal}</p>
+          </NumberedLeftSection>
+        </PortfolioRevealBlock>
         <NumberedLeftSection number={2} title="Toolkit" icon={<Wrench className="size-3" />} cat={cat}>
-          <div className="flex flex-wrap gap-1.5">
-            {project.toolkit.map((tool) => (
-              <span
-                key={tool}
-                className="rounded bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground"
-              >
-                {tool}
-              </span>
-            ))}
-          </div>
+          <ProjectCardToolkitSection
+            toolkit={project.toolkit}
+            chipBaseDelay={t.toolkitChip(0)}
+            chipsOnly
+          />
         </NumberedLeftSection>
         {bottomLine ? (
           <NumberedLeftSection
@@ -258,7 +322,7 @@ function PricingEngineLayout({ project, cat }: { project: Project; cat: ProjectC
             cat={cat}
             showConnector={false}
           >
-            <ProjectCardBottomLineHighlight text={bottomLine} cat={cat} />
+            <ProjectCardBottomLineHighlight text={bottomLine} cat={cat} delayMs={t.bottomLine} />
           </NumberedLeftSection>
         ) : null}
       </div>
@@ -272,6 +336,8 @@ function PricingEngineLayout({ project, cat }: { project: Project; cat: ProjectC
               ? "text-white marker:text-white font-normal"
               : "text-secondary-foreground marker:text-secondary-foreground font-normal"
           }
+          impactBaseDelay={t.impact}
+          impactStagger={t.impactStagger}
         />
       </div>
     </div>
@@ -322,6 +388,14 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const useMinimalArtifactModal =
     artifactModalProject !== null || project.id === "human-ai-collaboration-transformation"
 
+  const t = cardRevealTiming(project.toolkit.length, Boolean(project.bottomLine?.trim()))
+  const { ref, inView } = useInView<HTMLElement>({
+    rootMargin: "0px 0px -8% 0px",
+    threshold: 0.06,
+  })
+  const reduceMotion = useReducedMotion()
+  const revealActive = reduceMotion || inView
+
   const openArtifactModalGroup = (artifactIndex: number) => {
     setArtifactModalProject(projectWithSingleArtifact(project, artifactIndex))
     setIsArtifactModalOpen(true)
@@ -342,51 +416,70 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <>
       <article
-        className={`group relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 ${categoryBorderHoverClass[cat]} hover:bg-card/80`}
-        style={{ animationDelay: `${index * 100}ms` }}
+        ref={ref}
+        data-inview={revealActive ? "true" : "false"}
+        className={`group group/pcard relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 ${categoryBorderHoverClass[cat]} hover:bg-card/80`}
       >
         <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-3">
-              <Badge className={`font-mono text-xs border-0 ${categoryBadgeClass[cat]}`}>
-                {project.category}
-              </Badge>
-              <h3
-                className={`text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
-              >
-                {project.title}
-              </h3>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <User className="size-3.5" />
-              {project.role}
-            </div>
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <PortfolioRevealBlock delayMs={t.title}>
+              <div className="flex flex-wrap items-center gap-3">
+                <Badge className={`font-mono text-xs border-0 ${categoryBadgeClass[cat]}`}>
+                  {project.category}
+                </Badge>
+                <h3
+                  className={`text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
+                >
+                  {project.title}
+                </h3>
+              </div>
+            </PortfolioRevealBlock>
+            <PortfolioRevealBlock delayMs={t.meta}>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <User className="size-3.5" />
+                {project.role}
+              </div>
+            </PortfolioRevealBlock>
           </div>
-          <span className="font-mono text-sm text-muted-foreground">
-            {String(index + 1).padStart(2, "0")}
-          </span>
+          <PortfolioRevealBlock delayMs={t.indexBadge} emphasize chip className="inline-block shrink-0">
+            <span className="font-mono text-sm text-muted-foreground">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </PortfolioRevealBlock>
         </div>
 
         {structuredProductLayoutIds.has(project.id) ? (
-          <PricingEngineLayout project={project} cat={cat} />
+          <PricingEngineLayout project={project} cat={cat} t={t} />
         ) : (
           <div className="grid w-full gap-6 md:grid-cols-2">
             <div className="flex min-w-0 flex-col gap-6">
-              <ProjectCardGoalSection goal={project.goal} />
-              <ProjectCardToolkitSection toolkit={project.toolkit} />
+              <ProjectCardGoalSection goal={project.goal} delayMs={t.goal} />
+              <ProjectCardToolkitSection toolkit={project.toolkit} chipBaseDelay={t.toolkitChip(0)} />
               {project.bottomLine?.trim() ? (
-                <ProjectCardBottomLineSection text={project.bottomLine.trim()} cat={cat} />
+                <ProjectCardBottomLineSection
+                  text={project.bottomLine.trim()}
+                  cat={cat}
+                  delayMs={t.bottomLine}
+                />
               ) : null}
             </div>
-            <ProjectCardImpactSection project={project} cat={cat} />
+            <ProjectCardImpactSection
+              project={project}
+              cat={cat}
+              impactBaseDelay={t.impact}
+              impactStagger={t.impactStagger}
+            />
           </div>
         )}
 
         {project.additionalRow && project.additionalRow.length > 0 ? (
-          <ProjectCardAdditionalRow items={project.additionalRow} />
+          <PortfolioRevealBlock delayMs={Math.min(t.bottomLine + 72, t.impact)}>
+            <ProjectCardAdditionalRow items={project.additionalRow} />
+          </PortfolioRevealBlock>
         ) : null}
 
-        <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
+        <PortfolioRevealBlock delayMs={t.footer}>
+          <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
           {undisclosedArtifacts ? (
             <span
               className="inline-flex max-w-full flex-wrap items-center gap-2 text-sm text-muted-foreground"
@@ -454,9 +547,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             )
           )}
         </div>
+        </PortfolioRevealBlock>
 
         <div
-          className={`absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full transition-transform group-hover:translate-x-10 group-hover:-translate-y-10 ${categoryCornerGlowClass[cat]}`}
+          className={`absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full transition-transform group-hover/pcard:translate-x-10 group-hover/pcard:-translate-y-10 ${categoryCornerGlowClass[cat]}`}
         />
       </article>
 
