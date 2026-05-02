@@ -83,9 +83,6 @@ const LOGOS_EDUCATION: { src: string; alt: string }[] = [
   { src: "/companylogos/nsitlogo.png", alt: "Netaji Subhas University of Technology (NSUT)" },
 ]
 
-const EXP_LOGO_COUNT = LOGOS_EXPERIENCE.length
-const EDU_LOGO_COUNT = LOGOS_EDUCATION.length
-
 /**
  * Final fraction of scroll after the interleaved story: story layers fade out, toolkit
  * word cloud fades in and stays at full opacity through p = 1.
@@ -118,14 +115,6 @@ const UTAUSTIN_LOGO_SUBSTRING = "utaustimmcombslogo"
 const NSIT_LOGO_SUBSTRING = "nsitlogo"
 const QUIET_LOGO_SUBSTRING = "quiet-logo"
 
-const IMAGINATION_PAIR_COUNT = PORTFOLIO_IMAGINATION_SCROLL_PAIRS.length
-
-/**
- * Fixed seed → stable shuffled interleaved story (logos, category blurbs, imagination pairs).
- * Change the seed to reshuffle; changing slide count `n` also changes the permutation.
- */
-const STORY_SHUFFLE_SEED = 0x50c1a11
-
 /** Centered row for Imagination Labs image + text pairs. */
 const IMAGINATION_PAIR_SLOT: CSSProperties = {
   top: "50%",
@@ -140,29 +129,36 @@ type StoryStep =
   | { kind: "slide"; slideIndex: number }
   | { kind: "imagination-pair"; pairIndex: number }
 
-function buildStoryStepsUnshuffled(n: number): StoryStep[] {
-  const out: StoryStep[] = []
-  for (let i = 0; i < EXP_LOGO_COUNT; i++) out.push({ kind: "exp-logo", expIndex: i })
-  for (let i = 0; i < EDU_LOGO_COUNT; i++) out.push({ kind: "edu-logo", eduIndex: i })
-  for (let i = 0; i < n; i++) out.push({ kind: "slide", slideIndex: i })
-  for (let i = 0; i < IMAGINATION_PAIR_COUNT; i++) out.push({ kind: "imagination-pair", pairIndex: i })
-  return out
-}
-
-function shuffleStorySteps(steps: StoryStep[], seed: number): StoryStep[] {
-  const arr = [...steps]
-  let s = seed >>> 0
-  const next = () => {
-    s = (Math.imul(1664525, s) + 1013904223) >>> 0
-    return s
+/**
+ * Scroll order after the intro line: logos, bottom-line slides, and imagination pairs
+ * in the sequence requested for the home story track.
+ */
+function buildStoryStepsInScrollOrder(slides: PortfolioBottomLineSlide[]): StoryStep[] {
+  const indexById = new Map(slides.map((s, i) => [s.id, i]))
+  const slide = (id: string): StoryStep | null => {
+    const slideIndex = indexById.get(id)
+    if (slideIndex === undefined) return null
+    return { kind: "slide" as const, slideIndex }
   }
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = next() % (i + 1)
-    const t = arr[i]!
-    arr[i] = arr[j]!
-    arr[j] = t
-  }
-  return arr
+  const ordered: (StoryStep | null)[] = [
+    { kind: "exp-logo", expIndex: 0 },
+    slide("human-ai-collaboration-transformation"),
+    slide("tmys"),
+    { kind: "edu-logo", eduIndex: 0 },
+    slide("customer-retention-churn-intelligence"),
+    slide("pricing-engine"),
+    slide("market-sentiment-investment-analysis"),
+    { kind: "exp-logo", expIndex: 1 },
+    { kind: "imagination-pair", pairIndex: 1 },
+    slide("nl2sql-reporting"),
+    { kind: "edu-logo", eduIndex: 1 },
+    slide("conversational-knowledge-platform"),
+    slide("customer-targeting-revenue"),
+    { kind: "imagination-pair", pairIndex: 0 },
+    { kind: "exp-logo", expIndex: 2 },
+    { kind: "edu-logo", eduIndex: 2 },
+  ]
+  return ordered.filter((s): s is StoryStep => s !== null)
 }
 
 function slideCategoryToNavKey(category: ProjectCategory): "products" | "academics" | "imagination" {
@@ -192,12 +188,8 @@ export function PortfolioHomeScroll() {
   const [insets, setInsets] = useState({ top: 132, bottom: PORTFOLIO_RAIL_BOTTOM_INSET_PX })
 
   const slides = useMemo(() => getPortfolioBottomLineSlides(), [])
-  const n = slides.length
 
-  const storySteps = useMemo(
-    () => shuffleStorySteps(buildStoryStepsUnshuffled(n), STORY_SHUFFLE_SEED),
-    [n]
-  )
+  const storySteps = useMemo(() => buildStoryStepsInScrollOrder(slides), [slides])
   const storyStepCount = storySteps.length
 
   const trackMinVh = useMemo(
