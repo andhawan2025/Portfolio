@@ -406,11 +406,10 @@ export const projects: Project[] = [
     category: "Academics/Research",
     goal:
       "Automate plant seedling classification using computer vision to reduce manual effort in weed identification and improve agricultural efficiency.",
-    impactSectionLabel: "Key Accomplishments",
+    impactSectionLabel: "Accomplishments",
     impactBullets: [
       "Built and evaluated multiple CNN architectures, improving model performance from ~64% to ~68% accuracy and significantly increasing recall (~61% → ~79%).",
       "Enhanced model generalization using data augmentation, learning rate tuning, and batch normalization, reducing overfitting and improving real-world applicability.",
-      "Engineered end-to-end data pipeline (resizing, normalization, encoding, train/val/test split) for efficient and scalable image processing.",
       "Identified class imbalance and category-specific performance gaps (e.g., Black Grass, Common Wheat), informing targeted data acquisition strategy.",
       "Established Recall as the primary success metric to maximize correct identification of seedlings in high-impact agricultural use cases.",
       "Recommended future improvements including transfer learning (e.g., VGG16) and additional labeled data to further boost accuracy and reduce computational cost.",

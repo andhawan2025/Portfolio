@@ -352,6 +352,7 @@ const structuredProductLayoutIds = new Set([
   "customer-targeting-revenue",
   "customer-retention-churn-intelligence",
   "market-sentiment-investment-analysis",
+  "plant-image-classification-weed-detection",
   "tmys",
 ])
 
