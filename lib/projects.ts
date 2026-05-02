@@ -71,6 +71,9 @@ const CREDIT_CARD_CHURN_ARTIFACTS = "/portfolio/ResearchProjects/CreditCardChurn
 
 /** Stock sentiment / market analysis research artifacts (served from `public/portfolio/...`). */
 const STOCK_SENTIMENT_ARTIFACTS = "/portfolio/ResearchProjects/StockSentimentAnalysis"
+
+/** Plant / weed detection CV research artifacts (`public/portfolio/researchprojects/weeddetection/`). */
+const WEED_DETECTION_ARTIFACTS = "/portfolio/researchprojects/weeddetection"
 const HUMAN_AI_COLLAB_TRANSFORMATION_ARTIFACTS = "/portfolio/Products"
 const INSPIRATIONAL_CARTOONS_PORTFOLIO = "/portfolio"
 
@@ -395,6 +398,58 @@ export const projects: Project[] = [
       { label: "Word Embeddings", artifactIndex: 2 },
       { label: "Sentiment Analysis", artifactIndex: 3 },
       { label: "Prompt Engineering", artifactIndex: 4 },
+    ],
+  },
+  {
+    id: "plant-image-classification-weed-detection",
+    title: "Plant Image Classification for Automated Weed Detection",
+    category: "Academics/Research",
+    goal:
+      "Automate plant seedling classification using computer vision to reduce manual effort in weed identification and improve agricultural efficiency.",
+    impactSectionLabel: "Key Accomplishments",
+    impactBullets: [
+      "Built and evaluated multiple CNN architectures, improving model performance from ~64% to ~68% accuracy and significantly increasing recall (~61% → ~79%).",
+      "Enhanced model generalization using data augmentation, learning rate tuning, and batch normalization, reducing overfitting and improving real-world applicability.",
+      "Engineered end-to-end data pipeline (resizing, normalization, encoding, train/val/test split) for efficient and scalable image processing.",
+      "Identified class imbalance and category-specific performance gaps (e.g., Black Grass, Common Wheat), informing targeted data acquisition strategy.",
+      "Established Recall as the primary success metric to maximize correct identification of seedlings in high-impact agricultural use cases.",
+      "Recommended future improvements including transfer learning (e.g., VGG16) and additional labeled data to further boost accuracy and reduce computational cost.",
+    ],
+    role: "Researcher / Builder",
+    toolkit: [
+      "Convolutional Neural Networks",
+      "Computer Vision",
+      "Multiclass Classification",
+      "Image Transformation",
+      "Batch Normalization",
+      "Learning Rate Scheduling",
+      "Confusion Matrix",
+    ],
+    bottomLine:
+      "Automated and improved seedling classification recall by 18 percentage points and performance by four percentage points by deploying an optimized CNN model with data augmentation and normalization techniques, enabling scalable and more accurate weed identification in agricultural workflows.",
+    artifacts: [
+      artifactEntry("Executive Summary", "Executive overview and outcomes.", [
+        `${WEED_DETECTION_ARTIFACTS}/ExecutiveSummary.png`,
+      ]),
+      artifactEntry("Research Approach", "Problem framing and methodology.", [
+        `${WEED_DETECTION_ARTIFACTS}/ResearchApproach.png`,
+      ]),
+      artifactEntry(
+        "Image Transformation",
+        "Augmentation and preprocessing views.",
+        [1, 2, 3].map((n) => `${WEED_DETECTION_ARTIFACTS}/ImageTransformation${n}.png`)
+      ),
+      artifactEntry(
+        "Model Performance",
+        "Training results, confusion matrix, and evaluation.",
+        [1, 2, 3, 4, 5].map((n) => `${WEED_DETECTION_ARTIFACTS}/ModelPerformance${n}.png`)
+      ),
+    ],
+    artifactModalGroups: [
+      { label: "Executive Summary", artifactIndex: 0 },
+      { label: "Research Approach", artifactIndex: 1 },
+      { label: "Image Transformation", artifactIndex: 2 },
+      { label: "Model Performance", artifactIndex: 3 },
     ],
   },
   {

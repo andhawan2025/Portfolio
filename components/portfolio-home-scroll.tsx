@@ -156,6 +156,7 @@ function buildStoryStepsInScrollOrder(slides: PortfolioBottomLineSlide[]): Story
     slide("customer-targeting-revenue"),
     { kind: "imagination-pair", pairIndex: 0 },
     { kind: "exp-logo", expIndex: 2 },
+    slide("plant-image-classification-weed-detection"),
     { kind: "edu-logo", eduIndex: 2 },
   ]
   return ordered.filter((s): s is StoryStep => s !== null)
