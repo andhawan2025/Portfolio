@@ -22,7 +22,7 @@ export function HeroSection() {
       data-inview={active ? "true" : "false"}
       className="group/hero-reveal flex flex-col gap-0"
     >
-      <div className="border-b border-border pb-3">
+      <div className="w-full border-b border-border px-[0.5in] pt-[0.3in] pb-1 sm:pb-1.5">
         <SectionRevealBlock groupName="hero-reveal" delayMs={0}>
           <PortfolioHeroTopBand />
         </SectionRevealBlock>

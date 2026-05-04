@@ -23,7 +23,7 @@ const FALLBACK_SVG = encodeURIComponent(
 const DATA_URI = `data:image/svg+xml;charset=utf-8,${FALLBACK_SVG}`
 
 const avatarClassName =
-  "block h-[76px] w-[76px] shrink-0 rounded-full border-2 border-primary bg-muted object-cover lg:h-[92px] lg:w-[92px]"
+  "block h-[76px] w-[76px] shrink-0 rounded-full border-2 border-muted-foreground/45 bg-muted object-cover lg:h-[92px] lg:w-[92px]"
 
 async function exists(path: string): Promise<boolean> {
   try {

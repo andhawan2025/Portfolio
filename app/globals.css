@@ -89,3 +89,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Portfolio home: slow opacity blink on load (3 cycles), then holds full opacity. */
+@keyframes portfolio-scroll-hint-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.28;
+  }
+}
+
+.animate-portfolio-scroll-hint-blink {
+  animation: portfolio-scroll-hint-blink 2.35s ease-in-out 3 forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-portfolio-scroll-hint-blink {
+    animation: none;
+  }
+}
