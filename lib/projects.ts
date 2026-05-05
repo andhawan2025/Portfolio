@@ -72,8 +72,8 @@ const CREDIT_CARD_CHURN_ARTIFACTS = "/portfolio/ResearchProjects/CreditCardChurn
 /** Stock sentiment / market analysis research artifacts (served from `public/portfolio/...`). */
 const STOCK_SENTIMENT_ARTIFACTS = "/portfolio/ResearchProjects/StockSentimentAnalysis"
 
-/** Plant / weed detection CV research artifacts (`public/portfolio/researchprojects/weeddetection/`). */
-const WEED_DETECTION_ARTIFACTS = "/portfolio/researchprojects/weeddetection"
+/** Plant / weed detection CV research artifacts (`public/portfolio/ResearchProjects/WeedDetection/`). */
+const WEED_DETECTION_ARTIFACTS = "/portfolio/ResearchProjects/WeedDetection"
 const HUMAN_AI_COLLAB_TRANSFORMATION_ARTIFACTS = "/portfolio/Products"
 const INSPIRATIONAL_CARTOONS_PORTFOLIO = "/portfolio"
 
