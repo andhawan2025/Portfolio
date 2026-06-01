@@ -407,9 +407,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
     setArtifactModalProject(null)
   }
 
+  const inspirationalColumns = project.inspirationalCartoonsColumns?.length ?? 0
   if (
     project.layout === "inspirational-cartoons" &&
-    project.inspirationalCartoonsColumns?.length === 2
+    inspirationalColumns >= 2 &&
+    inspirationalColumns <= 3
   ) {
     return <InspirationalCartoonsProjectCard project={project} index={index} />
   }
@@ -488,7 +490,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             >
               <ImageIcon className="size-4 shrink-0 opacity-50" />
               <span className="font-medium">View Artifacts</span>
-              {project.id === "tmys" ? null : (
+              {project.id === "tmys" || project.id === "cptverse" ? null : (
                 <span className="font-normal">(undisclosed due to proprietary reasons.)</span>
               )}
             </span>
@@ -521,20 +523,36 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 : null}
             </>
           ) : null}
-          {project.artifactLinks?.map((link) =>
-            link.kind === "external" ? (
-              <a
-                key={link.label}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClass}
-              >
-                <ExternalLink className="size-4" />
-                {link.label}
-                <ArrowUpRight className="size-3" />
-              </a>
-            ) : (
+          {project.artifactLinks?.map((link) => {
+            if (link.kind === "disabled") {
+              return (
+                <span
+                  key={link.label}
+                  className="inline-flex items-center gap-2 text-sm text-muted-foreground"
+                  aria-disabled
+                >
+                  <ExternalLink className="size-4 shrink-0 opacity-50" />
+                  <span className="font-medium">{link.label}</span>
+                  <ArrowUpRight className="size-3 shrink-0 opacity-50" />
+                </span>
+              )
+            }
+            if (link.kind === "external") {
+              return (
+                <a
+                  key={link.label}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                >
+                  <ExternalLink className="size-4" />
+                  {link.label}
+                  <ArrowUpRight className="size-3" />
+                </a>
+              )
+            }
+            return (
               <button
                 key={link.label}
                 type="button"
@@ -546,7 +564,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 <ArrowUpRight className="size-3" />
               </button>
             )
-          )}
+          })}
         </div>
         </PortfolioRevealBlock>
 

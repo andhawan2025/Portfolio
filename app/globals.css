@@ -90,14 +90,28 @@
   }
 }
 
-/* Portfolio home: slow opacity blink on load (3 cycles), then holds full opacity. */
+/* Portfolio home: blink + gentle down-bounce on load (3 cycles), then holds steady. */
 @keyframes portfolio-scroll-hint-blink {
   0%,
   100% {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  35% {
+    opacity: 0.45;
+    transform: translate3d(0, 0.5rem, 0);
   }
   50% {
     opacity: 0.28;
+    transform: translate3d(0, 0.625rem, 0);
+  }
+  65% {
+    opacity: 0.55;
+    transform: translate3d(0, -0.125rem, 0);
+  }
+  80% {
+    opacity: 0.85;
+    transform: translate3d(0, 0.2rem, 0);
   }
 }
 

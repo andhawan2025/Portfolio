@@ -3,6 +3,7 @@ export type ProjectCategory = "Products" | "Academics/Research" | "Imagination L
 
 export type ArtifactLink =
   | { kind: "external"; label: string; url: string }
+  | { kind: "disabled"; label: string }
   | { kind: "tmysMap"; label: string }
 
 /** Two columns (Dolma / Kit Cat) for `layout: "inspirational-cartoons"`. */
@@ -53,10 +54,20 @@ export interface Project {
    * Use with a full `artifacts` list; “View Artifacts” still opens all slides.
    */
   artifactModalGroups?: { label: string; artifactIndex: number }[]
-  /** Custom two-column card with rotating quotes (Imagination Labs). */
+  /** Custom character showcase card (Imagination Labs). */
   layout?: "inspirational-cartoons"
-  /** Required when `layout` is `inspirational-cartoons` (typically two entries). */
+  /** Required when `layout` is `inspirational-cartoons` (two or three entries). */
   inspirationalCartoonsColumns?: InspirationalCartoonsColumn[]
+  /** Optional overrides for inspirational-cartoons layout (e.g. CPTVerse trio). */
+  inspirationalCartoonsOptions?: {
+    circularImages?: boolean
+    hideQuotes?: boolean
+    hideDescriptions?: boolean
+    /** Single channel link below all characters (instead of per-column Subscribe). */
+    sharedYoutubeUrl?: string
+    /** Auto-cycling stills shown under the character row (e.g. CPTVerse scenes). */
+    revolvingSceneImages?: string[]
+  }
 }
 
 function artifactEntry(title: string, description = "", images: string[] = []) {
@@ -76,6 +87,7 @@ const STOCK_SENTIMENT_ARTIFACTS = "/portfolio/ResearchProjects/StockSentimentAna
 const WEED_DETECTION_ARTIFACTS = "/portfolio/ResearchProjects/WeedDetection"
 const HUMAN_AI_COLLAB_TRANSFORMATION_ARTIFACTS = "/portfolio/Products"
 const INSPIRATIONAL_CARTOONS_PORTFOLIO = "/portfolio"
+const CPTVERSE_SCENES_PORTFOLIO = `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/cptverse-scenes`
 
 export const projects: Project[] = [
   {
@@ -488,6 +500,58 @@ export const projects: Project[] = [
     artifactLinks: [
       { kind: "external", label: "Demo Video", url: "https://www.youtube.com/watch?v=YveTm6DmPWM" },
       { kind: "tmysMap", label: "TMYS Agentic Map" },
+    ],
+  },
+  {
+    id: "cptverse",
+    title: "CPTVerse",
+    category: "Imagination Labs",
+    role: "Producer/Director",
+    goal: "Create long-form animated videos based purely on Gen AI technologies",
+    impact:
+      "Generated a consistent web series around the adventure of three friends, Cid, Pat and Tim.",
+    toolkit: ["Tell Me Your Story"],
+    artifacts: [],
+    artifactModalUndisclosed: true,
+    artifactLinks: [
+      {
+        kind: "external",
+        label: "Workflow Demo",
+        url: "https://www.youtube.com/watch?v=p90oSo161jk",
+      },
+    ],
+    layout: "inspirational-cartoons",
+    inspirationalCartoonsOptions: {
+      circularImages: true,
+      hideQuotes: true,
+      hideDescriptions: true,
+      sharedYoutubeUrl: "https://www.youtube.com/@CPTVerse",
+      revolvingSceneImages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+        (n) => `${CPTVERSE_SCENES_PORTFOLIO}/Scene${n}.png`
+      ),
+    },
+    inspirationalCartoonsColumns: [
+      {
+        characterName: "Cid",
+        image: `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/CidWithBackground.png`,
+        description: "",
+        quotes: [],
+        youtubeUrl: "",
+      },
+      {
+        characterName: "Pat",
+        image: `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/PatWithBackground.png`,
+        description: "",
+        quotes: [],
+        youtubeUrl: "",
+      },
+      {
+        characterName: "Tim",
+        image: `${INSPIRATIONAL_CARTOONS_PORTFOLIO}/TimWithBackground.png`,
+        description: "",
+        quotes: [],
+        youtubeUrl: "",
+      },
     ],
   },
   {

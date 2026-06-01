@@ -1,8 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { User, Target, TrendingUp, Wrench } from "lucide-react"
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Image as ImageIcon,
+  User,
+  Target,
+  TrendingUp,
+  Wrench,
+} from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { PortfolioRevealBlock } from "@/components/portfolio-reveal"
 import { useInView } from "@/hooks/use-in-view"
 import { useReducedMotion } from "@/hooks/use-reduced-motion"
@@ -24,6 +35,8 @@ const YOUTUBE_LOGO_SRC = portfolioPath("/tmys-arch/youtube-logo.png")
 const DOLMA_QUOTE_INTERVAL_MS = 7_000
 /** Kit Cat column (right) — spiritual quotes. */
 const KIT_CAT_QUOTE_INTERVAL_MS = 8_000
+/** CPTVerse scene stills under the character row (matches CPTVerse SceneCarousel). */
+const CPTVERSE_SCENE_INTERVAL_MS = 3_000
 
 function useRotatingIndex(length: number, intervalMs: number) {
   const [index, setIndex] = useState(0)
@@ -37,18 +50,139 @@ function useRotatingIndex(length: number, intervalMs: number) {
   return index
 }
 
+function RevolvingSceneGallery({ images }: { images: string[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const reduceMotion = useReducedMotion()
+
+  useEffect(() => {
+    if (!isAutoPlaying || images.length <= 1 || reduceMotion) return
+
+    const interval = window.setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length)
+    }, CPTVERSE_SCENE_INTERVAL_MS)
+
+    return () => window.clearInterval(interval)
+  }, [isAutoPlaying, images.length, reduceMotion])
+
+  if (images.length === 0) return null
+
+  const goToPrevious = () => {
+    setIsAutoPlaying(false)
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)
+  }
+
+  const goToNext = () => {
+    setIsAutoPlaying(false)
+    setCurrentIndex((prev) => (prev + 1) % images.length)
+  }
+
+  return (
+    <div className="relative mx-auto mt-8 w-full max-w-sm">
+      <div className="relative">
+        <div className="relative aspect-video w-full overflow-hidden rounded-lg border-2 border-amber-500/30 bg-card shadow-sm">
+          {images.map((src, index) => (
+            <div
+              key={src}
+              className={`absolute inset-0 transition-opacity duration-700 ${
+                index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <div className="absolute inset-0 bg-card p-2">
+                <img
+                  src={src}
+                  alt={`CPTVerse scene ${index + 1}`}
+                  className="h-full w-full object-contain object-center"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/50 text-foreground hover:bg-background/80"
+          onClick={goToPrevious}
+          aria-label="Previous scene"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </Button>
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/50 text-foreground hover:bg-background/80"
+          onClick={goToNext}
+          aria-label="Next scene"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </Button>
+      </div>
+
+      <div className="mt-4 flex justify-center gap-2">
+        {images.map((src, index) => (
+          <button
+            key={src}
+            type="button"
+            aria-label={`Scene ${index + 1}`}
+            className={`h-3 w-3 rounded-full transition-colors ${
+              index === currentIndex ? "bg-amber-500" : "bg-muted"
+            }`}
+            onClick={() => {
+              setIsAutoPlaying(false)
+              setCurrentIndex(index)
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function InspirationalColumn({
   column,
   cat,
   quoteIntervalMs,
+  circularImages,
+  hideQuotes,
+  hideDescriptions,
+  showPerColumnYoutube,
 }: {
   column: InspirationalCartoonsColumn
   cat: Project["category"]
   quoteIntervalMs: number
+  circularImages?: boolean
+  hideQuotes?: boolean
+  hideDescriptions?: boolean
+  showPerColumnYoutube?: boolean
 }) {
-  const quoteIndex = useRotatingIndex(column.quotes.length, quoteIntervalMs)
+  const showQuotes = !hideQuotes && column.quotes.length > 0
+  const quoteIndex = useRotatingIndex(showQuotes ? column.quotes.length : 0, quoteIntervalMs)
   const quote = column.quotes[quoteIndex] ?? ""
   const impactTone = categoryImpactTextClass[cat]
+  const showDescription = !hideDescriptions && Boolean(column.description.trim())
+
+  if (circularImages) {
+    return (
+      <div className="flex min-w-0 flex-col items-center gap-4">
+        <h4
+          className={`w-full text-center text-xl font-semibold tracking-tight text-foreground transition-colors sm:text-2xl ${categoryTitleHoverClass[cat]}`}
+        >
+          {column.characterName}
+        </h4>
+        <div className="relative size-40 shrink-0 overflow-hidden rounded-full border-2 border-amber-500/35 bg-muted/30 shadow-[0_10px_30px_rgba(245,158,11,0.18)] sm:size-44">
+          <img
+            src={column.image}
+            alt={column.characterName}
+            className="h-full w-full object-cover object-[center_15%]"
+          />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex min-w-0 flex-col items-center gap-4">
@@ -57,7 +191,13 @@ function InspirationalColumn({
       >
         {column.characterName}
       </h4>
-      <div className="flex w-full items-start justify-center gap-4">
+      <div
+        className={
+          showDescription || showPerColumnYoutube || showQuotes
+            ? "flex w-full items-start justify-center gap-4"
+            : "flex w-full justify-center"
+        }
+      >
         <div className="relative aspect-[9/16] w-full max-w-48 shrink-0 overflow-hidden rounded-lg bg-muted/30">
           <img
             src={column.image}
@@ -65,28 +205,36 @@ function InspirationalColumn({
             className="h-full w-full object-contain object-center"
           />
         </div>
-        <div className="mt-12 flex w-full max-w-48 flex-col items-start justify-center">
-          <p
-            className={`w-full h-[8rem] rounded-xl border border-amber-500/30 bg-amber-500/20 px-4 py-3 text-left text-[0.945rem] font-normal leading-relaxed shadow-[0_10px_30px_rgba(245,158,11,0.22)] ${impactTone}`}
-          >
-            {column.description}
-          </p>
-          <a
-            href={column.youtubeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex w-full items-center gap-1.5 text-sm font-medium text-blue-600 underline underline-offset-4 hover:text-blue-700"
-          >
-            <img src={YOUTUBE_LOGO_SRC} alt="" className="h-4 w-auto shrink-0" width={16} height={12} />
-            <span>Subscribe</span>
-          </a>
-          <blockquote
-            className="mt-4 min-h-[5rem] w-full py-2 text-left text-sm italic leading-relaxed text-foreground transition-opacity duration-300"
-            key={quoteIndex}
-          >
-            {quote}
-          </blockquote>
-        </div>
+        {showDescription || showPerColumnYoutube || showQuotes ? (
+          <div className="mt-12 flex w-full max-w-48 flex-col items-start justify-center">
+            {showDescription ? (
+              <p
+                className={`w-full h-[8rem] rounded-xl border border-amber-500/30 bg-amber-500/20 px-4 py-3 text-left text-[0.945rem] font-normal leading-relaxed shadow-[0_10px_30px_rgba(245,158,11,0.22)] ${impactTone}`}
+              >
+                {column.description}
+              </p>
+            ) : null}
+            {showPerColumnYoutube ? (
+              <a
+                href={column.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${showDescription ? "mt-4" : ""} inline-flex w-full items-center gap-1.5 text-sm font-medium text-blue-600 underline underline-offset-4 hover:text-blue-700`}
+              >
+                <img src={YOUTUBE_LOGO_SRC} alt="" className="h-4 w-auto shrink-0" width={16} height={12} />
+                <span>Subscribe</span>
+              </a>
+            ) : null}
+            {showQuotes ? (
+              <blockquote
+                className="mt-4 min-h-[5rem] w-full py-2 text-left text-sm italic leading-relaxed text-foreground transition-opacity duration-300"
+                key={quoteIndex}
+              >
+                {quote}
+              </blockquote>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </div>
   )
@@ -118,10 +266,14 @@ const categoryAccentTrackClass: Record<Project["category"], string> = {
 export function InspirationalCartoonsProjectCard({ project, index }: InspirationalCartoonsProjectCardProps) {
   const cat = project.category
   const columns = project.inspirationalCartoonsColumns ?? []
-  const t = cardRevealTiming(
-    project.toolkit.length,
-    Boolean(project.bottomLine?.trim() || project.impact?.trim())
-  )
+  const options = project.inspirationalCartoonsOptions
+  const columnCount = columns.length
+  const sharedYoutubeUrl = options?.sharedYoutubeUrl?.trim()
+  const revolvingSceneImages = options?.revolvingSceneImages ?? []
+  const showPerColumnYoutube = !sharedYoutubeUrl
+  const undisclosedArtifacts = project.artifactModalUndisclosed === true
+  const bottomLineText = project.bottomLine?.trim() || project.impact?.trim() || ""
+  const t = cardRevealTiming(project.toolkit.length, Boolean(bottomLineText))
   const { ref, inView } = useInView<HTMLElement>({
     rootMargin: "0px 0px -8% 0px",
     threshold: 0.06,
@@ -129,7 +281,7 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
   const reduceMotion = useReducedMotion()
   const revealActive = reduceMotion || inView
 
-  if (columns.length !== 2) return null
+  if (columnCount < 2 || columnCount > 3) return null
 
   return (
     <article
@@ -225,18 +377,102 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
             <TrendingUp className={`size-3 ${categoryAccentTextClass[cat]}`} />
             <span className={categoryAccentTextClass[cat]}>Bottom Line</span>
           </div>
-          <p className="ml-8 text-sm leading-relaxed text-secondary-foreground">{project.impact ?? ""}</p>
+          <p className="ml-8 text-sm leading-relaxed text-secondary-foreground">{bottomLineText}</p>
         </PortfolioRevealBlock>
       </div>
 
-      <div className="grid gap-10 md:grid-cols-2 md:gap-8">
-        <PortfolioRevealBlock delayMs={t.impact}>
-          <InspirationalColumn column={columns[0]} cat={cat} quoteIntervalMs={DOLMA_QUOTE_INTERVAL_MS} />
-        </PortfolioRevealBlock>
-        <PortfolioRevealBlock delayMs={t.impact + 70}>
-          <InspirationalColumn column={columns[1]} cat={cat} quoteIntervalMs={KIT_CAT_QUOTE_INTERVAL_MS} />
-        </PortfolioRevealBlock>
+      <div
+        className={
+          columnCount === 3
+            ? "grid gap-10 md:grid-cols-3 md:gap-6"
+            : "grid gap-10 md:grid-cols-2 md:gap-8"
+        }
+      >
+        {columns.map((column, i) => (
+          <PortfolioRevealBlock key={column.characterName} delayMs={t.impact + i * 70}>
+            <InspirationalColumn
+              column={column}
+              cat={cat}
+              quoteIntervalMs={i === 0 ? DOLMA_QUOTE_INTERVAL_MS : KIT_CAT_QUOTE_INTERVAL_MS}
+              circularImages={options?.circularImages}
+              hideQuotes={options?.hideQuotes}
+              hideDescriptions={options?.hideDescriptions}
+              showPerColumnYoutube={showPerColumnYoutube}
+            />
+          </PortfolioRevealBlock>
+        ))}
       </div>
+
+      {revolvingSceneImages.length > 0 ? (
+        <PortfolioRevealBlock delayMs={t.impact + columnCount * 70}>
+          <RevolvingSceneGallery images={revolvingSceneImages} />
+        </PortfolioRevealBlock>
+      ) : null}
+
+      {sharedYoutubeUrl ? (
+        <PortfolioRevealBlock
+          delayMs={t.impact + columnCount * 70 + (revolvingSceneImages.length > 0 ? 80 : 0)}
+          className="mt-8 flex justify-center"
+        >
+          <a
+            href={sharedYoutubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 underline underline-offset-4 hover:text-blue-700"
+          >
+            <img src={YOUTUBE_LOGO_SRC} alt="" className="h-4 w-auto shrink-0" width={16} height={12} />
+            <span>Subscribe</span>
+          </a>
+        </PortfolioRevealBlock>
+      ) : null}
+
+      {(project.artifactLinks?.length ?? 0) > 0 || undisclosedArtifacts ? (
+        <PortfolioRevealBlock delayMs={t.footer}>
+          <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
+            {undisclosedArtifacts ? (
+              <span
+                className="inline-flex max-w-full flex-wrap items-center gap-2 text-sm text-muted-foreground"
+                aria-disabled
+              >
+                <ImageIcon className="size-4 shrink-0 opacity-50" />
+                <span className="font-medium">View Artifacts</span>
+              </span>
+            ) : null}
+            {project.artifactLinks?.map((link) => {
+              const linkClass = `inline-flex items-center gap-2 text-sm font-medium underline-offset-4 transition-colors ${categoryLinkClass[cat]}`
+              if (link.kind === "disabled") {
+                return (
+                  <span
+                    key={link.label}
+                    className="inline-flex items-center gap-2 text-sm text-muted-foreground"
+                    aria-disabled
+                  >
+                    <ExternalLink className="size-4 shrink-0 opacity-50" />
+                    <span className="font-medium">{link.label}</span>
+                    <ArrowUpRight className="size-3 shrink-0 opacity-50" />
+                  </span>
+                )
+              }
+              if (link.kind === "external") {
+                return (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${linkClass} hover:underline`}
+                  >
+                    <ExternalLink className="size-4" />
+                    {link.label}
+                    <ArrowUpRight className="size-3" />
+                  </a>
+                )
+              }
+              return null
+            })}
+          </div>
+        </PortfolioRevealBlock>
+      ) : null}
 
       <div
         className={`absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full transition-transform group-hover/pcard:translate-x-10 group-hover/pcard:-translate-y-10 ${categoryCornerGlowClass[cat]}`}

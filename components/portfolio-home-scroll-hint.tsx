@@ -14,7 +14,7 @@ type PortfolioHomeScrollHintProps = {
 
 /**
  * Fixed bottom control on the portfolio home scroll experience: encourages scrolling
- * with a short opacity blink on load, then stays static until the user scrolls away.
+ * with a short blink + down-bounce on load, then stays static until the user scrolls away.
  */
 export function PortfolioHomeScrollHint({ scrollProgress, reduceMotion: reduceMotionProp }: PortfolioHomeScrollHintProps) {
   const reduceMotionPref = useReducedMotion()
@@ -46,7 +46,7 @@ export function PortfolioHomeScrollHint({ scrollProgress, reduceMotion: reduceMo
         variant="outline"
         size="icon"
         className={cn(
-          "pointer-events-auto h-11 w-11 rounded-full border-primary/45 bg-background/90 shadow-md backdrop-blur-sm hover:bg-background",
+          "pointer-events-auto h-11 w-11 rounded-full border-[5px] border-primary/45 bg-background/90 shadow-md backdrop-blur-sm hover:bg-background",
           visible && !reduceMotion && "animate-portfolio-scroll-hint-blink"
         )}
         aria-label="Scroll down for more"
@@ -58,7 +58,7 @@ export function PortfolioHomeScrollHint({ scrollProgress, reduceMotion: reduceMo
           })
         }}
       >
-        <ChevronDown className="h-6 w-6 text-primary" aria-hidden />
+        <ChevronDown className="h-6 w-6 text-primary" strokeWidth={5} aria-hidden />
       </Button>
     </div>
   )
