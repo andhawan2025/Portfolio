@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Wrench,
 } from "lucide-react"
+import { ArtifactModal } from "@/components/artifact-modal"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { PortfolioRevealBlock } from "@/components/portfolio-reveal"
@@ -245,6 +246,18 @@ interface InspirationalCartoonsProjectCardProps {
   index: number
 }
 
+function hasArtifactModalContent(project: Project) {
+  return project.artifacts.some(
+    (a) => a.images.length > 0 || Boolean(a.title?.trim())
+  )
+}
+
+function projectWithSingleArtifact(project: Project, artifactIndex: number): Project {
+  const slice = project.artifacts[artifactIndex]
+  if (!slice) return project
+  return { ...project, artifacts: [slice] }
+}
+
 const categoryAccentTextClass: Record<Project["category"], string> = {
   Products: "text-primary",
   "Academics/Research": "text-emerald-500",
@@ -264,6 +277,8 @@ const categoryAccentTrackClass: Record<Project["category"], string> = {
 }
 
 export function InspirationalCartoonsProjectCard({ project, index }: InspirationalCartoonsProjectCardProps) {
+  const [isArtifactModalOpen, setIsArtifactModalOpen] = useState(false)
+  const [artifactModalProject, setArtifactModalProject] = useState<Project | null>(null)
   const cat = project.category
   const columns = project.inspirationalCartoonsColumns ?? []
   const options = project.inspirationalCartoonsOptions
@@ -272,6 +287,9 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
   const revolvingSceneImages = options?.revolvingSceneImages ?? []
   const showPerColumnYoutube = !sharedYoutubeUrl
   const undisclosedArtifacts = project.artifactModalUndisclosed === true
+  const showArtifactButton = hasArtifactModalContent(project) && !undisclosedArtifacts
+  const artifactGroups = project.artifactModalGroups ?? []
+  const linkClass = `inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline transition-colors ${categoryLinkClass[cat]}`
   const bottomLineText = project.bottomLine?.trim() || project.impact?.trim() || ""
   const t = cardRevealTiming(project.toolkit.length, Boolean(bottomLineText))
   const { ref, inView } = useInView<HTMLElement>({
@@ -283,7 +301,23 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
 
   if (columnCount < 2 || columnCount > 3) return null
 
+  const openArtifactModalGroup = (artifactIndex: number) => {
+    setArtifactModalProject(projectWithSingleArtifact(project, artifactIndex))
+    setIsArtifactModalOpen(true)
+  }
+
+  const closeArtifactModal = () => {
+    setIsArtifactModalOpen(false)
+    setArtifactModalProject(null)
+  }
+
+  const showArtifactFooter =
+    (project.artifactLinks?.length ?? 0) > 0 ||
+    undisclosedArtifacts ||
+    showArtifactButton
+
   return (
+    <>
     <article
       ref={ref}
       data-inview={revealActive ? "true" : "false"}
@@ -426,7 +460,7 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
         </PortfolioRevealBlock>
       ) : null}
 
-      {(project.artifactLinks?.length ?? 0) > 0 || undisclosedArtifacts ? (
+      {showArtifactFooter ? (
         <PortfolioRevealBlock delayMs={t.footer}>
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-border pt-4">
             {undisclosedArtifacts ? (
@@ -437,6 +471,36 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
                 <ImageIcon className="size-4 shrink-0 opacity-50" />
                 <span className="font-medium">View Artifacts</span>
               </span>
+            ) : showArtifactButton ? (
+              <>
+                {artifactGroups.length > 0 ? (
+                  <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                    <ImageIcon className="size-4 shrink-0 opacity-70" aria-hidden />
+                    <span className="font-medium">View Artifacts</span>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setIsArtifactModalOpen(true)}
+                    className={linkClass}
+                  >
+                    <ImageIcon className="size-4" />
+                    View Artifacts
+                    <ArrowUpRight className="size-3" />
+                  </button>
+                )}
+                {artifactGroups.map(({ label, artifactIndex }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => openArtifactModalGroup(artifactIndex)}
+                    className={linkClass}
+                  >
+                    {label}
+                    <ArrowUpRight className="size-3" />
+                  </button>
+                ))}
+              </>
             ) : null}
             {project.artifactLinks?.map((link) => {
               const linkClass = `inline-flex items-center gap-2 text-sm font-medium underline-offset-4 transition-colors ${categoryLinkClass[cat]}`
@@ -478,5 +542,15 @@ export function InspirationalCartoonsProjectCard({ project, index }: Inspiration
         className={`absolute right-0 top-0 h-24 w-24 translate-x-12 -translate-y-12 rounded-full transition-transform group-hover/pcard:translate-x-10 group-hover/pcard:-translate-y-10 ${categoryCornerGlowClass[cat]}`}
       />
     </article>
+
+    {showArtifactButton ? (
+      <ArtifactModal
+        project={artifactModalProject ?? project}
+        isOpen={isArtifactModalOpen}
+        onClose={closeArtifactModal}
+        variant="minimal"
+      />
+    ) : null}
+    </>
   )
 }

@@ -516,6 +516,11 @@ export const projects: Project[] = [
     artifactLinks: [
       {
         kind: "external",
+        label: "Introduction",
+        url: "https://www.youtube.com/watch?v=LwUNYk253b0",
+      },
+      {
+        kind: "external",
         label: "Workflow Demo",
         url: "https://www.youtube.com/watch?v=p90oSo161jk",
       },

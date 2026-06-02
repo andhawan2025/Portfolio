@@ -31,6 +31,64 @@ interface ArtifactModalProps {
 
 type Slide = { image: string; title: string; description: string }
 
+function isVideoSrc(src: string) {
+  return /\.(mp4|webm|ogg)(\?|#|$)/i.test(src)
+}
+
+function ArtifactMedia({
+  src,
+  title,
+  slideLabel,
+  variant,
+}: {
+  src: string
+  title: string
+  slideLabel: string
+  variant: "minimal" | "default"
+}) {
+  if (isVideoSrc(src)) {
+    const videoClass =
+      variant === "minimal"
+        ? "absolute inset-0 h-full w-full object-contain object-center"
+        : "h-full w-full object-contain object-center"
+    return (
+      <video
+        src={src}
+        controls
+        playsInline
+        preload="metadata"
+        className={videoClass}
+        aria-label={slideLabel}
+      />
+    )
+  }
+
+  if (variant === "minimal") {
+    return (
+      <Image
+        src={src}
+        alt={slideLabel}
+        fill
+        className="object-contain object-center"
+        crossOrigin="anonymous"
+        priority
+        sizes="(max-width: 128rem) 100vw, 128rem"
+      />
+    )
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={`${title} - ${slideLabel}`}
+      fill
+      className="object-cover"
+      crossOrigin="anonymous"
+      priority
+    />
+  )
+}
+
 function buildSlides(project: Project): Slide[] {
   return project.artifacts.flatMap((artifact) => {
     if (artifact.images.length > 0) {
@@ -111,14 +169,11 @@ export function ArtifactModal({ project, isOpen, onClose, variant = "default" }:
             <div className="relative flex w-full items-center justify-center bg-secondary/40 px-4 py-6">
               <div className="relative mx-auto h-[min(85vh,920px)] w-full max-w-[120rem]">
                 {hasImage ? (
-                  <Image
+                  <ArtifactMedia
                     src={currentSlideData.image}
-                    alt={`${currentSlideData.title} — slide ${currentSlide + 1}`}
-                    fill
-                    className="object-contain object-center"
-                    crossOrigin="anonymous"
-                    priority
-                    sizes="(max-width: 128rem) 100vw, 128rem"
+                    title={currentSlideData.title}
+                    slideLabel={`${currentSlideData.title} — slide ${currentSlide + 1}`}
+                    variant="minimal"
                   />
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-8 text-center">
@@ -200,13 +255,11 @@ export function ArtifactModal({ project, isOpen, onClose, variant = "default" }:
         <div className="relative">
           <div className="relative aspect-[16/9] bg-secondary">
             {hasImage ? (
-              <Image
+              <ArtifactMedia
                 src={currentSlideData.image}
-                alt={`${currentSlideData.title} - Slide ${currentSlide + 1}`}
-                fill
-                className="object-cover"
-                crossOrigin="anonymous"
-                priority
+                title={currentSlideData.title}
+                slideLabel={`Slide ${currentSlide + 1}`}
+                variant="default"
               />
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-secondary to-muted p-8 text-center">
