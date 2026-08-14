@@ -14,3 +14,16 @@ export function portfolioPath(path: string): string {
 export const RESUME_PDF_HREF = portfolioPath(
   `/${encodeURIComponent("Anubhav Dhawan Resume 2026.pdf")}`
 )
+
+/** Sample work page route. */
+export const SAMPLE_WORK = `${PORTFOLIO_BASE}/samplework`
+
+/** Embedded slide preview image for `/portfolio/samplework`. */
+export const SAMPLE_WORK_SLIDE_SRC = portfolioPath(
+  `/${encodeURIComponent("KPI Visualization and Computation.png")}`
+)
+
+/** Downloadable sample-work PowerPoint. */
+export const SAMPLE_WORK_PPTX_HREF = portfolioPath(
+  `/${encodeURIComponent("KPI Visualization and Computation.pptx")}`
+)
