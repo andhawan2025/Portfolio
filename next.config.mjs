@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export", // Required for a fully static Cloudflare Pages export
+  basePath: "/portfolio", // Forces all routes and assets to serve under /portfolio
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -8,7 +10,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "://unsplash.com",
       },
     ],
   },
