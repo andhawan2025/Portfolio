@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export", // Required for a fully static Cloudflare Pages export
-  basePath: "/portfolio", // Forces all routes and assets to serve under /portfolio
+  basePath: "/portfolio", // Tells Next.js to serve the app under /portfolio
   typescript: {
     ignoreBuildErrors: true,
   },
