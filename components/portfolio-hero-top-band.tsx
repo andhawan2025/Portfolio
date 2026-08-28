@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { PortfolioNavContactBlock } from "@/components/contact-section"
 import { ProfileAvatar } from "@/components/profile-avatar"
 import { Button } from "@/components/ui/button"
-import { PORTFOLIO_BASE, PORTFOLIO_DETAILS, RESUME_PDF_HREF } from "@/lib/site-paths"
+import { PORTFOLIO_DETAILS, PORTFOLIO_HOME, RESUME_PDF_HREF } from "@/lib/site-paths"
 import { cn } from "@/lib/utils"
 
 export type PortfolioHeroTopBandVariant = "home" | "details"
@@ -21,8 +21,8 @@ type PortfolioHeroTopBandProps = {
  */
 export function PortfolioHeroTopBand(_props: PortfolioHeroTopBandProps) {
   const pathname = usePathname() ?? ""
-  const isPortfolioLanding = pathname === "/portfolio" || pathname === "/portfolio/"
-  const isPortfolioDetails = pathname.startsWith("/portfolio/details")
+  const isPortfolioLanding = pathname === "/" || pathname === ""
+  const isPortfolioDetails = pathname.startsWith("/details")
   const homeIsPrimary = isPortfolioLanding
   const portfolioIsPrimary = isPortfolioDetails
 
@@ -52,7 +52,7 @@ export function PortfolioHeroTopBand(_props: PortfolioHeroTopBandProps) {
       <div className="mt-10 flex w-full min-w-0 flex-row flex-wrap items-center justify-center gap-2 self-start pt-2 sm:mt-11 md:mt-0 md:items-center md:self-center md:gap-2.5 md:pt-4 lg:gap-3">
         <Button asChild variant="outline" className={cn(btnClass, homeIsPrimary && btnActiveClass)}>
           <Link
-            href={PORTFOLIO_BASE}
+            href={PORTFOLIO_HOME}
             className="inline-flex h-full w-full items-center justify-center"
             {...(homeIsPrimary ? { "aria-current": "page" as const } : {})}
           >

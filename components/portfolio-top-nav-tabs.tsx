@@ -7,7 +7,7 @@ import {
   portfolioNavKeyToDetailHash,
   type PortfolioNavRailKey,
 } from "@/lib/portfolio-nav-config"
-import { PORTFOLIO_BASE, PORTFOLIO_DETAILS } from "@/lib/site-paths"
+import { PORTFOLIO_DETAILS, PORTFOLIO_HOME } from "@/lib/site-paths"
 import { cn } from "@/lib/utils"
 
 function clamp01(x: number) {
@@ -56,7 +56,7 @@ export function PortfolioTopNavTabs({ className, navHighlight }: PortfolioTopNav
           return (
             <Link
               key={key}
-              href={PORTFOLIO_BASE}
+              href={PORTFOLIO_HOME}
               className={cn(
                 tabShell,
                 isActive

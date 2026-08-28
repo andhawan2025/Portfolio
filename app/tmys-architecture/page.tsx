@@ -1,12 +1,12 @@
 import Link from "next/link"
-import { portfolioPath } from "@/lib/site-paths"
+import { PORTFOLIO_HOME, portfolioPath } from "@/lib/site-paths"
 
 export default function TMYSArchitecturePage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#0d1117]">
       <div className="border-b border-[#30363d] px-4 py-3">
         <Link
-          href={portfolioPath("/")}
+          href={PORTFOLIO_HOME}
           className="text-sm font-medium text-[#58a6ff] hover:underline"
         >
           ← Back to portfolio

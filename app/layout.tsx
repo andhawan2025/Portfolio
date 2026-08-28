@@ -4,8 +4,8 @@ import { portfolioPath } from "@/lib/site-paths"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "TMYS.ai",
-  description: "Tell Me Your Story",
+  title: "Anubhav Dhawan Portfolio",
+  description: "AI/ML product leadership.",
   icons: {
     icon: [
       {

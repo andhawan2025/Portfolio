@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/portfolio", // Tells Next.js to serve the app under /portfolio
+  basePath: "/portfolio",
   typescript: {
     ignoreBuildErrors: true,
   },

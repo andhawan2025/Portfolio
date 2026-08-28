@@ -1,7 +1,7 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import {
-  PORTFOLIO_BASE,
+  PORTFOLIO_HOME,
   SAMPLE_WORK_PPTX_HREF,
   SAMPLE_WORK_SLIDE_SRC,
 } from "@/lib/site-paths"
@@ -16,7 +16,7 @@ export default function SampleWorkPage() {
     <div className="flex min-h-screen flex-col bg-[#0d1117]">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#30363d] px-4 py-3">
         <Link
-          href={PORTFOLIO_BASE}
+          href={PORTFOLIO_HOME}
           className="text-sm font-medium text-[#58a6ff] hover:underline"
         >
           ← Back to portfolio
